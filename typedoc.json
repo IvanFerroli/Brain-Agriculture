@@ -1,0 +1,8 @@
+{
+  "entryPoints": ["src"],
+  "out": "docs",
+  "name": "Serasa Agro API",
+  "includeVersion": true,
+  "entryPointStrategy": "expand",
+  "tsconfig": "tsconfig.json"
+}
