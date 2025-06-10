@@ -24,7 +24,8 @@ export class ProdutorService {
     return this.produtores;
   }
 
-  findById(id: string): Produtor {
-    return this.produtores.find(p => p.id === id);
-  }
+  findById(id: string): Produtor | undefined {
+  return this.produtores.find(p => p.id === id);
+}
+
 }

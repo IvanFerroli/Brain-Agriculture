@@ -1,9 +1,9 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
-import { CreateProdutorDto } from '../dto/create-produtor.dto';
-import { ProdutorService } from '../services/produtor.service';
-import { Produtor } from '../entities/produtor.entity';
+import { Body, Controller, Get, Param, Post } from "@nestjs/common";
+import { CreateProdutorDto } from "../dto/create-produtor.dto";
+import { ProdutorService } from "../services/produtor.service";
+import { Produtor } from "../entities/produtor.entity";
 
-@Controller('produtores')
+@Controller("produtores")
 export class ProdutorController {
   constructor(private readonly produtorService: ProdutorService) {}
 
@@ -17,8 +17,8 @@ export class ProdutorController {
     return this.produtorService.findAll();
   }
 
-  @Get(':id')
-  async findById(@Param('id') id: string): Promise<Produtor> {
+  @Get(":id")
+  async findById(@Param("id") id: string): Promise<Produtor | undefined> {
     return this.produtorService.findById(id);
   }
 }
