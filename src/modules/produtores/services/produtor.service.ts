@@ -1,59 +1,52 @@
 import { Injectable } from '@nestjs/common';
 import { CreateProdutorDto } from '../dto/create-produtor.dto';
 import { Produtor } from '../entities/produtor.entity';
-import { v4 as uuid } from 'uuid';
+import { ProdutorRepository } from '../repositories/produtor.repository';
 
 /**
- * Service responsável por lidar com as regras de negócio relacionadas aos produtores.
+ * Service responsável pelas regras de negócio dos produtores.
  *
- * Neste estágio inicial, os dados estão sendo armazenados em memória (array local).
- * Em etapas futuras, será substituído por persistência real com banco de dados (ex: Prisma/PostgreSQL).
+ * Essa classe consome um repositório que implementa a interface `ProdutorRepository`,
+ * permitindo trocar facilmente a infraestrutura de persistência (in-memory, banco de dados etc.)
+ * sem alterar a lógica de negócio.
  */
 @Injectable()
 export class ProdutorService {
   /**
-   * Lista que armazena temporariamente os produtores em memória.
+   * Injeta o repositório de produtores que implementa o contrato `ProdutorRepository`.
+   *
+   * @param produtorRepository Implementação concreta da interface de repositório (ex: InMemoryProdutorRepository)
    */
-  private produtores: Produtor[] = [];
+  constructor(
+    private readonly produtorRepository: ProdutorRepository,
+  ) {}
 
   /**
-   * Cria um novo produtor e o adiciona à lista em memória.
+   * Cria um novo produtor chamando o repositório correspondente.
    *
-   * @param dto Objeto contendo o nome e documento do produtor a ser criado
-   * @returns O produtor recém-criado, com ID e timestamps gerados automaticamente
-   *
-   * @example
-   * this.create({ nome: "João", documento: "12345678900" })
+   * @param dto Objeto com nome e documento do produtor
+   * @returns O produtor criado, com ID e timestamps
    */
   create(dto: CreateProdutorDto): Produtor {
-    const produtor: Produtor = {
-      id: uuid(),
-      nome: dto.nome,
-      documento: dto.documento,
-      criadoEm: new Date(),
-      atualizadoEm: new Date(),
-    };
-
-    this.produtores.push(produtor);
-    return produtor;
+    return this.produtorRepository.create(dto);
   }
 
   /**
    * Retorna todos os produtores cadastrados.
    *
-   * @returns Lista de produtores atualmente armazenados em memória
+   * @returns Lista de produtores
    */
   findAll(): Produtor[] {
-    return this.produtores;
+    return this.produtorRepository.findAll();
   }
 
   /**
-   * Busca um produtor específico com base no seu ID.
+   * Busca um produtor pelo ID.
    *
-   * @param id Identificador único (UUID) do produtor
-   * @returns O produtor correspondente ao ID, ou `undefined` se não encontrado
+   * @param id UUID do produtor
+   * @returns O produtor correspondente, ou `undefined` se não existir
    */
   findById(id: string): Produtor | undefined {
-    return this.produtores.find(p => p.id === id);
+    return this.produtorRepository.findById(id);
   }
 }
