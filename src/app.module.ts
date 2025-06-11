@@ -4,6 +4,7 @@ import { ConfigModule } from '@nestjs/config';
 import { PrismaModule } from './prisma/prisma.module';
 import { HealthController } from './health/health.controller';
 import { envSchema } from './config/env.validation';
+import { ProdutorModule } from './modules/produtores/produtor.module';
 
 /**
  * Módulo principal da aplicação (`AppModule`).
@@ -15,9 +16,6 @@ import { envSchema } from './config/env.validation';
   imports: [
     /**
      * Módulo de configuração global, que carrega e valida as variáveis de ambiente do `.env`.
-     *
-     * A validação é feita usando o Zod schema (`envSchema`), e impede o boot da aplicação
-     * caso alguma variável obrigatória esteja ausente ou mal formatada.
      */
     ConfigModule.forRoot({
       isGlobal: true,
@@ -33,14 +31,17 @@ import { envSchema } from './config/env.validation';
 
     /**
      * Módulo global de acesso ao banco de dados via Prisma.
-     * Disponibiliza o `PrismaService` para toda a aplicação.
      */
     PrismaModule,
+
+    /**
+     * Módulo de domínio responsável por produtores rurais.
+     */
+    ProdutorModule,
   ],
 
   /**
    * Controladores disponíveis na aplicação.
-   * No momento, expõe apenas o endpoint de healthcheck.
    */
   controllers: [HealthController],
 })
