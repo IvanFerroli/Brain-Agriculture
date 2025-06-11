@@ -8,8 +8,8 @@ import { ProdutorRepository } from './repositories/produtor.repository';
 import { InMemoryProdutorRepository } from './repositories/in-memory-produtor.repository';
 
 import { commandHandlers } from './commands';
-import { FindAllProdutoresHandler } from './queries/find-all-produtores.handler';
-import { FindProdutorByIdHandler } from './queries/find-produtor-by-id.handler';
+import { queryHandlers } from './queries';
+
 
 /**
  * Módulo responsável por encapsular toda a lógica relacionada ao domínio de produtores.
@@ -35,8 +35,8 @@ import { FindProdutorByIdHandler } from './queries/find-produtor-by-id.handler';
      * Handlers do padrão CQRS (comandos e queries).
      */
     ...commandHandlers,
-    FindAllProdutoresHandler,
-    FindProdutorByIdHandler,
+    ...queryHandlers,
+
 
     /**
      * Override manual do provider para aplicar a implementação concreta da interface.
