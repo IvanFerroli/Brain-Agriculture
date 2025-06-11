@@ -4,12 +4,10 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { ProdutorController } from './controllers/produtor.controller';
 import { ProdutorService } from './services/produtor.service';
 
-import { ProdutorRepository } from './repositories/produtor.repository';
-import { InMemoryProdutorRepository } from './repositories/in-memory-produtor.repository';
+import { ProdutorRepository, InMemoryProdutorRepository } from './repositories';
 
 import { commandHandlers } from './commands';
 import { queryHandlers } from './queries';
-
 
 /**
  * Módulo responsável por encapsular toda a lógica relacionada ao domínio de produtores.
@@ -36,7 +34,6 @@ import { queryHandlers } from './queries';
      */
     ...commandHandlers,
     ...queryHandlers,
-
 
     /**
      * Override manual do provider para aplicar a implementação concreta da interface.
