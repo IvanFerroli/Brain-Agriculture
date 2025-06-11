@@ -1,73 +1,58 @@
-import { Body, Controller, Get, Param, Post } from "@nestjs/common";
-import { CreateProdutorDto } from "../dto/create-produtor.dto";
-import { ProdutorService } from "../services/produtor.service";
-import { Produtor } from "../entities/produtor.entity";
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
+import { CreateProdutorDto } from '../dto/create-produtor.dto';
+import { Produtor } from '../entities/produtor.entity';
+import { CreateProdutorCommand } from '../commands/create-produtor.command';
+import { FindAllProdutoresQuery } from '../queries/find-all-produtores.query';
+import { FindProdutorByIdQuery } from '../queries/find-produtor-by-id.query';
 
 /**
  * Controlador responsável por lidar com as requisições relacionadas aos produtores.
  *
  * Todas as rotas deste controlador serão prefixadas por `/produtores`.
- * Por exemplo:
- * - POST `/produtores` → Cria um novo produtor
- * - GET `/produtores` → Lista todos os produtores
- * - GET `/produtores/:id` → Retorna um produtor específico pelo ID
  */
-@Controller("produtores")
+@Controller('produtores')
 export class ProdutorController {
   /**
-   * Injeta o serviço de produtores para lidar com a lógica de negócio.
+   * Injeta os barramentos do CQRS (CommandBus e QueryBus).
    * 
-   * @param produtorService Serviço responsável pelas operações com produtores
+   * @param commandBus Responsável por executar comandos (ações que alteram o estado)
+   * @param queryBus Responsável por executar queries (ações que apenas leem dados)
    */
-  constructor(private readonly produtorService: ProdutorService) {}
+  constructor(
+    private readonly commandBus: CommandBus,
+    private readonly queryBus: QueryBus,
+  ) {}
 
   /**
    * Rota para criar um novo produtor.
    *
-   * Esta rota espera um corpo (body) com os campos `nome` e `documento` (CPF/CNPJ),
-   * validados pelo DTO `CreateProdutorDto`.
-   *
    * @param dto Dados do produtor a ser criado
    * @returns O produtor recém-criado
-   *
-   * @example
-   * POST /produtores
-   * {
-   *   "nome": "João da Silva",
-   *   "documento": "12345678900"
-   * }
    */
   @Post()
   async create(@Body() dto: CreateProdutorDto): Promise<Produtor> {
-    return this.produtorService.create(dto);
+    return this.commandBus.execute(new CreateProdutorCommand(dto));
   }
 
   /**
    * Rota para buscar todos os produtores cadastrados.
    *
-   * Nenhum parâmetro é necessário.
-   *
-   * @returns Lista de todos os produtores registrados
-   *
-   * @example
-   * GET /produtores
+   * @returns Lista de produtores
    */
   @Get()
   async findAll(): Promise<Produtor[]> {
-    return this.produtorService.findAll();
+    return this.queryBus.execute(new FindAllProdutoresQuery());
   }
 
   /**
-   * Rota para buscar um produtor específico pelo seu ID.
+   * Rota para buscar um produtor pelo ID.
    *
-   * @param id O identificador único (UUID) do produtor
-   * @returns O produtor correspondente ao ID, ou `undefined` se não encontrado
-   *
-   * @example
-   * GET /produtores/7f34c24d-8d91-45c5-a23c-e2e456b973f9
+   * @param id UUID do produtor
+   * @returns Produtor correspondente ou `undefined` se não encontrado
    */
-  @Get(":id")
-  async findById(@Param("id") id: string): Promise<Produtor | undefined> {
-    return this.produtorService.findById(id);
+  @Get(':id')
+  async findById(@Param('id') id: string): Promise<Produtor | undefined> {
+    return this.queryBus.execute(new FindProdutorByIdQuery(id));
   }
 }
