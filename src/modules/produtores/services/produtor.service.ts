@@ -60,5 +60,21 @@ export class ProdutorService {
   update(id: string, data: Partial<CreateProdutorDto>): Produtor {
     return this.produtorRepository.update(id, data);
   }
+
+    /**
+   * Remove um produtor pelo ID.
+   *
+   * @param id UUID do produtor a ser removido
+   */
+  delete(id: string): void {
+    const index = this.produtorRepository.findAll().findIndex(p => p.id === id);
+
+    if (index === -1) {
+      throw new Error('Produtor não encontrado');
+    }
+
+    this.produtorRepository.findAll().splice(index, 1);
+  }
+
 }
 
