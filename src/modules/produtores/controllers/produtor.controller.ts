@@ -1,8 +1,9 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { CreateProdutorDto } from '../dto/create-produtor.dto';
 import { Produtor } from '../entities/produtor.entity';
 import { CreateProdutorCommand } from '../commands/create-produtor.command';
+import { UpdateProdutorCommand } from '../commands/update-produtor.command';
 import { FindAllProdutoresQuery } from '../queries/find-all-produtores.query';
 import { FindProdutorByIdQuery } from '../queries/find-produtor-by-id.query';
 
@@ -54,5 +55,20 @@ export class ProdutorController {
   @Get(':id')
   async findById(@Param('id') id: string): Promise<Produtor | undefined> {
     return this.queryBus.execute(new FindProdutorByIdQuery(id));
+  }
+
+  /**
+   * Rota para atualizar parcialmente um produtor existente.
+   *
+   * @param id UUID do produtor a ser atualizado
+   * @param dto Campos parciais a serem atualizados (nome, documento)
+   * @returns O produtor atualizado
+   */
+  @Put(':id')
+  async update(
+    @Param('id') id: string,
+    @Body() dto: Partial<CreateProdutorDto>,
+  ): Promise<Produtor> {
+    return this.commandBus.execute(new UpdateProdutorCommand(id, dto));
   }
 }
