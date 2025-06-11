@@ -7,11 +7,9 @@ import { ProdutorService } from './services/produtor.service';
 import { ProdutorRepository } from './repositories/produtor.repository';
 import { InMemoryProdutorRepository } from './repositories/in-memory-produtor.repository';
 
-import { CreateProdutorHandler } from './commands/create-produtor.handler';
+import { commandHandlers } from './commands';
 import { FindAllProdutoresHandler } from './queries/find-all-produtores.handler';
 import { FindProdutorByIdHandler } from './queries/find-produtor-by-id.handler';
-import { UpdateProdutorHandler } from './commands/update-produtor.handler';
-
 
 /**
  * Módulo responsável por encapsular toda a lógica relacionada ao domínio de produtores.
@@ -36,10 +34,9 @@ import { UpdateProdutorHandler } from './commands/update-produtor.handler';
     /**
      * Handlers do padrão CQRS (comandos e queries).
      */
-    CreateProdutorHandler,
+    ...commandHandlers,
     FindAllProdutoresHandler,
     FindProdutorByIdHandler,
-     UpdateProdutorHandler,
 
     /**
      * Override manual do provider para aplicar a implementação concreta da interface.
