@@ -10,6 +10,7 @@ import { InMemoryProdutorRepository } from './repositories/in-memory-produtor.re
 import { CreateProdutorHandler } from './commands/create-produtor.handler';
 import { FindAllProdutoresHandler } from './queries/find-all-produtores.handler';
 import { FindProdutorByIdHandler } from './queries/find-produtor-by-id.handler';
+import { UpdateProdutorHandler } from './commands/update-produtor.handler';
 
 
 /**
@@ -38,6 +39,7 @@ import { FindProdutorByIdHandler } from './queries/find-produtor-by-id.handler';
     CreateProdutorHandler,
     FindAllProdutoresHandler,
     FindProdutorByIdHandler,
+     UpdateProdutorHandler,
 
     /**
      * Override manual do provider para aplicar a implementação concreta da interface.

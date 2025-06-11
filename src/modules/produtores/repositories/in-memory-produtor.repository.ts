@@ -29,7 +29,24 @@ export class InMemoryProdutorRepository implements ProdutorRepository {
     return this.produtores;
   }
 
-  findById(id: string): Produtor | undefined {
+    findById(id: string): Produtor | undefined {
     return this.produtores.find(p => p.id === id);
+  }
+
+  /**
+   * Atualiza parcialmente os dados de um produtor.
+   *
+   * @param id ID do produtor a ser atualizado
+   * @param data Campos que devem ser atualizados
+   * @returns O produtor atualizado
+   */
+  update(id: string, data: Partial<CreateProdutorDto>): Produtor {
+    const produtor = this.findById(id);
+    if (!produtor) {
+      throw new Error('Produtor não encontrado');
+    }
+
+    Object.assign(produtor, data, { atualizadoEm: new Date() });
+    return produtor;
   }
 }

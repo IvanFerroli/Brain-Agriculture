@@ -46,7 +46,19 @@ export class ProdutorService {
    * @param id UUID do produtor
    * @returns O produtor correspondente, ou `undefined` se não existir
    */
-  findById(id: string): Produtor | undefined {
+    findById(id: string): Produtor | undefined {
     return this.produtorRepository.findById(id);
   }
+
+  /**
+   * Atualiza parcialmente os dados de um produtor existente.
+   *
+   * @param id ID do produtor a ser atualizado
+   * @param data Dados parciais a serem atualizados
+   * @returns O produtor atualizado
+   */
+  update(id: string, data: Partial<CreateProdutorDto>): Produtor {
+    return this.produtorRepository.update(id, data);
+  }
 }
+

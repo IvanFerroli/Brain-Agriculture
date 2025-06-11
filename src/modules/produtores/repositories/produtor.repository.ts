@@ -30,4 +30,13 @@ export abstract class ProdutorRepository {
    * @returns O produtor encontrado ou `undefined` se não existir
    */
   abstract findById(id: string): Produtor | undefined;
+
+  /**
+   * Atualiza parcialmente os dados de um produtor existente.
+   *
+   * @param id ID do produtor a ser atualizado
+   * @param data Campos a serem atualizados
+   * @returns O produtor atualizado
+   */
+  abstract update(id: string, data: Partial<CreateProdutorDto>): Produtor;
 }
