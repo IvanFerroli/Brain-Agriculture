@@ -59,5 +59,5 @@ export class CreateFazendaDto {
    * a soma de áreas não deve exceder a área total.
    */
   @Validate(SomaAreasValidator)
-  validateSomaAreas!: this;
+  validateSomaAreas?: this;
 }
