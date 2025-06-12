@@ -4,17 +4,24 @@ import { FazendaService } from '../services/fazenda.service';
 import { Fazenda } from '../entities/fazenda.entity';
 
 /**
- * Handler responsável por processar a query de busca de uma fazenda pelo ID.
+ * @module Fazenda
+ * @category Query Handler
  *
- * Utiliza o service para obter os dados e encapsula a lógica de leitura no padrão CQRS.
+ * @description
+ * Handler responsável por executar a busca de fazenda por ID.
+ * Recebe a query `FindFazendaByIdQuery` e delega ao `FazendaService`.
  */
 @QueryHandler(FindFazendaByIdQuery)
 export class FindFazendaByIdHandler implements IQueryHandler<FindFazendaByIdQuery> {
   constructor(private readonly fazendaService: FazendaService) {}
 
   /**
-   * Executa a busca pela fazenda correspondente ao ID informado.
-   * @param query Contém o ID da fazenda.
+   * Executa a consulta por ID de fazenda.
+   *
+   * @param query - Objeto contendo o ID da fazenda
+   * @returns A fazenda encontrada ou `undefined` se não existir
+   *
+   * @throws NotFoundException (caso o service lance)
    */
   async execute(query: FindFazendaByIdQuery): Promise<Fazenda | undefined> {
     return this.fazendaService.findById(query.id);
