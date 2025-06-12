@@ -1,17 +1,16 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { FindProdutorByIdQuery } from './find-produtor-by-id.query';
-import { ProdutorService } from '../services/produtor.service';
-import { Produtor } from '../entities/produtor.entity';
+import { FindSafraByIdQuery } from './find-safra-by-id.query';
+import { SafraService } from '../services/safra.service';
+import { Safra } from '../entities/safra.entity';
 
 /**
- * Handler responsável por executar a busca de produtor por ID.
+ * Handler responsável por executar a busca de safra por ID.
  */
-@QueryHandler(FindProdutorByIdQuery)
-export class FindProdutorByIdHandler implements IQueryHandler<FindProdutorByIdQuery> {
-  constructor(private readonly produtorService: ProdutorService) {}
+@QueryHandler(FindSafraByIdQuery)
+export class FindSafraByIdHandler implements IQueryHandler<FindSafraByIdQuery> {
+  constructor(private readonly safraService: SafraService) {}
 
-    async execute(query: FindProdutorByIdQuery): Promise<Produtor | undefined> {
-    return this.produtorService.findById(query.id);
+  async execute(query: FindSafraByIdQuery): Promise<Safra | undefined> {
+    return this.safraService.findById(query.id);
   }
-
 }

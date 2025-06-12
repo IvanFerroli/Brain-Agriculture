@@ -4,7 +4,12 @@ import { ConfigModule } from '@nestjs/config';
 import { PrismaModule } from './prisma/prisma.module';
 import { HealthController } from './health/health.controller';
 import { envSchema } from './config/env.validation';
+
 import { ProdutorModule } from './modules/produtores/produtor.module';
+import { SafraModule } from './modules/safras/safra.module';
+import { CulturaModule } from './modules/culturas/cultura.module';
+import { FazendaModule } from './modules/fazendas/fazenda.module';
+import { DashboardModule } from './modules/dashboard/dashboard.module';
 
 /**
  * Módulo principal da aplicação (`AppModule`).
@@ -38,6 +43,26 @@ import { ProdutorModule } from './modules/produtores/produtor.module';
      * Módulo de domínio responsável por produtores rurais.
      */
     ProdutorModule,
+
+    /**
+     * Módulo de domínio responsável por safras agrícolas.
+     */
+    SafraModule,
+
+    /**
+     * Módulo de domínio responsável por culturas agrícolas.
+     */
+    CulturaModule,
+
+    /**
+     * Módulo de domínio responsável por fazendas.
+     */
+    FazendaModule,
+
+    /**
+     * Módulo responsável pelo dashboard da aplicação.
+     */
+    DashboardModule,
   ],
 
   /**

@@ -2,7 +2,7 @@ import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { CreateCulturaDto } from '../dto/create-cultura.dto';
 import { Cultura } from '../entities/cultura.entity';
-import { CreateCulturaCommand } from '../commands/create-cultura.command';
+import { CreateCulturaCommand } from '..//commands/create-cultura.command';
 import { UpdateCulturaCommand } from '../commands/update-cultura.command';
 import { FindAllCulturaQuery } from '../queries/find-all-cultura.query';
 import { FindCulturaByIdQuery } from '../queries/find-cultura-by-id.query';
