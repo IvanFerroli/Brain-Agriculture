@@ -1,14 +1,15 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, ConflictException, Injectable } from '@nestjs/common';
 import { CreateCulturaDto } from '../dto/create-cultura.dto';
 import { Cultura } from '../entities/cultura.entity';
 import { CulturaRepository } from '../repositories/cultura.repository';
 
 /**
- * Service responsável pelas regras de negócio das culturas.
+ * @module Cultura
+ * @category Service
  *
- * Essa classe consome um repositório que implementa a interface `CulturaRepository`,
- * permitindo trocar facilmente a infraestrutura de persistência (in-memory, banco de dados etc.)
- * sem alterar a lógica de negócio.
+ * @description
+ * Service responsável pelas regras de negócio das culturas.
+ * Aplica validações antes de delegar a persistência ao `CulturaRepository`.
  */
 @Injectable()
 export class CulturaService {
@@ -17,17 +18,27 @@ export class CulturaService {
    *
    * @param culturaRepository Implementação concreta da interface de repositório (ex: InMemoryCulturaRepository)
    */
-  constructor(
-    private readonly culturaRepository: CulturaRepository,
-  ) {}
+  constructor(private readonly culturaRepository: CulturaRepository) {}
 
   /**
-   * Cria uma nova cultura chamando o repositório correspondente.
+   * Cria uma nova cultura, garantindo que o nome seja único dentro da mesma safra.
    *
    * @param dto Objeto com nome e safraId da cultura
    * @returns A cultura criada, com ID e timestamps
+   *
+   * @throws {ConflictException} Se já existir cultura com mesmo nome na mesma safra
    */
   create(dto: CreateCulturaDto): Cultura {
+    const existe = this.culturaRepository.findAll().some(
+      (c) =>
+        c.nome.trim().toLowerCase() === dto.nome.trim().toLowerCase() &&
+        c.safraId === dto.safraId,
+    );
+
+    if (existe) {
+      throw new ConflictException('Cultura já cadastrada para essa safra');
+    }
+
     return this.culturaRepository.create(dto);
   }
 
@@ -65,12 +76,14 @@ export class CulturaService {
    * Remove uma cultura pelo ID.
    *
    * @param id UUID da cultura a ser removida
+   *
+   * @throws {BadRequestException} Se a cultura não for encontrada
    */
   delete(id: string): void {
-    const index = this.culturaRepository.findAll().findIndex(c => c.id === id);
+    const index = this.culturaRepository.findAll().findIndex((c) => c.id === id);
 
     if (index === -1) {
-      throw new Error('Cultura não encontrada');
+      throw new BadRequestException('Cultura não encontrada');
     }
 
     this.culturaRepository.findAll().splice(index, 1);
