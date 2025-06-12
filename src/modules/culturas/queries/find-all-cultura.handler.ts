@@ -4,19 +4,22 @@ import { CulturaService } from '../services/cultura.service';
 import { Cultura } from '../entities/cultura.entity';
 
 /**
- * Handler responsável por executar a query de busca de todas as culturas.
+ * @module Cultura
+ * @category Query Handler
  *
- * Recebe a query `FindAllCulturaQuery` e retorna a lista completa de culturas
- * cadastradas no sistema, utilizando a lógica de serviço (Service Layer).
+ * @description
+ * Handler responsável por executar a consulta de todas as culturas.
+ * Ele recebe a `FindAllCulturaQuery` e retorna a lista de culturas
+ * cadastradas através do `CulturaService`.
  */
 @QueryHandler(FindAllCulturaQuery)
 export class FindAllCulturaHandler implements IQueryHandler<FindAllCulturaQuery> {
   constructor(private readonly culturaService: CulturaService) {}
 
   /**
-   * Executa a consulta.
+   * Executa a consulta de todas as culturas.
    *
-   * @param _query Instância da query (não possui parâmetros neste caso)
+   * @param _query Instância da query (sem parâmetros neste caso)
    * @returns Lista de culturas cadastradas
    */
   async execute(_query: FindAllCulturaQuery): Promise<Cultura[]> {
