@@ -1,7 +1,11 @@
-import { BadRequestException, ConflictException, Injectable } from '@nestjs/common';
-import { CreateCulturaDto } from '../dto/create-cultura.dto';
-import { Cultura } from '../entities/cultura.entity';
-import { CulturaRepository } from '../repositories/cultura.repository';
+import {
+  BadRequestException,
+  ConflictException,
+  Injectable,
+} from "@nestjs/common";
+import { CreateCulturaDto } from "../dto/create-cultura.dto";
+import { Cultura } from "../entities/cultura.entity";
+import { CulturaRepository } from "../repositories/cultura.repository";
 
 /**
  * @module Cultura
@@ -29,14 +33,16 @@ export class CulturaService {
    * @throws {ConflictException} Se já existir cultura com mesmo nome na mesma safra
    */
   create(dto: CreateCulturaDto): Cultura {
-    const existe = this.culturaRepository.findAll().some(
-      (c) =>
-        c.nome.trim().toLowerCase() === dto.nome.trim().toLowerCase() &&
-        c.safraId === dto.safraId,
-    );
+    const existe = this.culturaRepository
+      .findAll()
+      .some(
+        (c) =>
+          c?.nome?.trim().toLowerCase() === dto.nome.trim().toLowerCase() &&
+          c?.safraId === dto.safraId,
+      );
 
     if (existe) {
-      throw new ConflictException('Cultura já cadastrada para essa safra');
+      throw new ConflictException("Cultura já cadastrada para essa safra");
     }
 
     return this.culturaRepository.create(dto);
@@ -80,10 +86,12 @@ export class CulturaService {
    * @throws {BadRequestException} Se a cultura não for encontrada
    */
   delete(id: string): void {
-    const index = this.culturaRepository.findAll().findIndex((c) => c.id === id);
+    const index = this.culturaRepository
+      .findAll()
+      .findIndex((c) => c.id === id);
 
     if (index === -1) {
-      throw new BadRequestException('Cultura não encontrada');
+      throw new BadRequestException("Cultura não encontrada");
     }
 
     this.culturaRepository.findAll().splice(index, 1);
