@@ -3,20 +3,27 @@ import { DeleteFazendaCommand } from './delete-fazenda.command';
 import { FazendaService } from '../services/fazenda.service';
 
 /**
- * Handler responsável por executar a lógica de exclusão de uma fazenda.
+ * @module Fazenda
+ * @category Command Handler
  *
- * Recebe um comando com o ID da fazenda e delega ao service responsável.
+ * @description
+ * Handler responsável por executar a exclusão de uma fazenda rural.
+ * Ele delega a lógica de negócio ao `FazendaService`, que realiza
+ * a verificação de existência e remoção segura da fazenda.
  */
 @CommandHandler(DeleteFazendaCommand)
 export class DeleteFazendaHandler implements ICommandHandler<DeleteFazendaCommand> {
   constructor(private readonly fazendaService: FazendaService) {}
 
   /**
-   * Executa a exclusão da fazenda com o ID informado.
-   * @param command Comando contendo o ID da fazenda a ser removida.
+   * Executa o comando de exclusão da fazenda com base no ID informado.
+   *
+   * @param command - Objeto `DeleteFazendaCommand` com o ID da fazenda a ser excluída.
+   * @returns Promise<void>
+   *
+   * @throws NotFoundException se o ID não corresponder a nenhuma fazenda existente.
    */
   async execute(command: DeleteFazendaCommand): Promise<void> {
-    const { id } = command;
-    await this.fazendaService.delete(id);
+    await this.fazendaService.delete(command.id);
   }
 }
