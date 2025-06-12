@@ -9,33 +9,33 @@ export class CreateFazendaDto {
    */
   @IsString()
   @IsNotEmpty()
-  nome: string;
+  nome!: string;
 
   /**
    * Área total da fazenda (em hectares).
    */
   @IsNumber()
   @IsPositive()
-  areaTotal: number;
+  areaTotal!: number;
 
   /**
    * Área agricultável da fazenda (em hectares).
    */
   @IsNumber()
   @IsPositive()
-  areaAgricultavel: number;
+  areaAgricultavel!: number;
 
   /**
    * Área de vegetação da fazenda (em hectares).
    */
   @IsNumber()
   @IsPositive()
-  areaVegetacao: number;
+  areaVegetacao!: number;
 
   /**
    * ID do produtor associado a esta fazenda.
    */
   @IsString()
   @IsNotEmpty()
-  produtorId: string;
+  produtorId!: string;
 }
