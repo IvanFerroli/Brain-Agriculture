@@ -15,18 +15,18 @@ import { Produtor } from '../entities/produtor.entity';
  * - Que o comando delega corretamente para o `ProdutorService`.
  * - Que erros como ID inexistente ou documento duplicado são propagados.
  *
- * O service é mockado para garantir isolamento e prever cenários de sucesso e falha.
+ * O service é mockado com tipagem explícita para garantir isolamento e previsibilidade.
  */
 describe('UpdateProdutorHandler', () => {
   let handler: UpdateProdutorHandler;
-  let service: jest.Mocked<ProdutorService>;
+  let service: { update: jest.Mock<Promise<Produtor>, [string, Partial<Produtor>]> };
 
   beforeEach(() => {
     service = {
-      update: jest.fn(),
-    } as unknown as jest.Mocked<ProdutorService>;
+      update: jest.fn<Promise<Produtor>, [string, Partial<Produtor>]>(),
+    };
 
-    handler = new UpdateProdutorHandler(service);
+    handler = new UpdateProdutorHandler(service as unknown as ProdutorService);
   });
 
   it('deve atualizar um produtor com dados válidos', async () => {
