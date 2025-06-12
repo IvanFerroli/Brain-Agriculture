@@ -3,12 +3,15 @@ import { GetDashboardMetricsQuery } from './get-dashboard-metrics.query';
 import { DashboardService } from '../services/dashboard.service';
 
 /**
+ * @module Dashboard
+ * @category Handler
+ *
  * Handler responsável por tratar a query `GetDashboardMetricsQuery`.
  *
  * Esta query recupera dados agregados para o dashboard com base nos filtros recebidos.
  * A lógica de agregação e filtragem é delegada ao `DashboardService`.
  *
- * 🚧 Obs: Os filtros podem incluir `search`, `areaMin`, `areaMax` e outros futuros.
+ * 🚧 Obs: Os filtros podem incluir `search`, `estado`, `cultura`, `areaMin`, `areaMax`, etc.
  */
 @QueryHandler(GetDashboardMetricsQuery)
 export class GetDashboardMetricsHandler implements IQueryHandler<GetDashboardMetricsQuery> {

@@ -4,6 +4,9 @@ import { DashboardFilterDto } from '../dto/dashboard-filter.dto';
 import { GetDashboardMetricsQuery } from '../queries/get-dashboard-metrics.query';
 
 /**
+ * @module Dashboard
+ * @category Controller
+ *
  * Controller responsável pelo acesso aos dados consolidados do dashboard.
  *
  * Este controller oferece endpoints de leitura, permitindo consultar métricas
@@ -18,11 +21,12 @@ export class DashboardController {
   /**
    * Retorna métricas e estatísticas para o dashboard.
    *
-   * Este endpoint aceita filtros opcionais por query string, como intervalo de datas,
-   * culturas específicas, produtores, ou áreas mínimas/máximas.
+   * Este endpoint aceita filtros opcionais por query string, como:
+   * - `search`, `estado`, `cultura`
+   * - `areaMin`, `areaMax`
    *
    * Exemplo de chamada:
-   * `/dashboard/metrics?culturaId=xyz&areaMin=50&areaMax=200`
+   * `/dashboard/metrics?search=soja&estado=SP&areaMin=50&areaMax=200`
    *
    * @param filters Filtros opcionais aplicados à consulta
    * @returns Objeto contendo os dados consolidados para exibição no dashboard

@@ -6,6 +6,9 @@ import { DashboardService } from './services/dashboard.service';
 import { GetDashboardMetricsHandler } from './queries/get-dashboard-metrics.handler';
 
 /**
+ * @module Dashboard
+ * @category Module
+ *
  * Módulo responsável pelo domínio de dashboard e métricas.
  *
  * Este módulo é responsável por expor os endpoints de leitura agregada (ex: total de produtores,
@@ -15,26 +18,18 @@ import { GetDashboardMetricsHandler } from './queries/get-dashboard-metrics.hand
  */
 @Module({
   imports: [
-    /**
-     * Módulo CQRS para permitir uso de QueryBus e CommandBus.
-     */
+    // Módulo CQRS para permitir uso de QueryBus e CommandBus
     CqrsModule,
   ],
   controllers: [
-    /**
-     * Controlador que expõe os endpoints públicos de dashboard.
-     */
+    // Controlador que expõe os endpoints públicos de dashboard
     DashboardController,
   ],
   providers: [
-    /**
-     * Serviço que implementa a lógica de agregação e métricas.
-     */
+    // Serviço que implementa a lógica de agregação e métricas
     DashboardService,
 
-    /**
-     * Handler da query de métricas do dashboard.
-     */
+    // Handler da query de métricas do dashboard
     GetDashboardMetricsHandler,
   ],
 })

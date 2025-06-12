@@ -1,6 +1,9 @@
 import { DashboardFilterDto } from '../dto/dashboard-filter.dto';
 
 /**
+ * @module Dashboard
+ * @category Query
+ *
  * Query para recuperar métricas agregadas do dashboard, aplicando os filtros informados.
  *
  * Esta query é manipulada pelo `GetDashboardMetricsHandler` e tem como objetivo
@@ -8,7 +11,8 @@ import { DashboardFilterDto } from '../dto/dashboard-filter.dto';
  *
  * Exemplos de filtros:
  * - `search`: texto livre para busca
- * - `areaMin` e `areaMax`: intervalo de área total da fazenda
+ * - `estado`, `cultura`: filtros textuais
+ * - `areaMin`, `areaMax`: intervalo de área total da fazenda
  */
 export class GetDashboardMetricsQuery {
   /**
