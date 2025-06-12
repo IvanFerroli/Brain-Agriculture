@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common';
-import { CreateProdutorDto } from '../dto/create-produtor.dto';
-import { Produtor } from '../entities/produtor.entity';
-import { ProdutorRepository } from '../repositories/produtor.repository';
+import { Injectable } from "@nestjs/common";
+import { CreateProdutorDto } from "../dto/create-produtor.dto";
+import { Produtor } from "../entities/produtor.entity";
+import { ProdutorRepository } from "../repositories/produtor.repository";
 
 /**
  * Service responsável pelas regras de negócio dos produtores.
@@ -17,18 +17,37 @@ export class ProdutorService {
    *
    * @param produtorRepository Implementação concreta da interface de repositório (ex: InMemoryProdutorRepository)
    */
-  constructor(
-    private readonly produtorRepository: ProdutorRepository,
-  ) {}
+  constructor(private readonly produtorRepository: ProdutorRepository) {}
 
   /**
-   * Cria um novo produtor chamando o repositório correspondente.
+   * Cria um novo produtor rural, garantindo que o documento (CPF ou CNPJ) não esteja duplicado.
    *
-   * @param dto Objeto com nome e documento do produtor
+   * Antes de persistir, o documento é normalizado para conter apenas dígitos numéricos,
+   * garantindo consistência de comparação e armazenamento.
+   *
+   * Regras de negócio aplicadas:
+   * - O documento deve ser único entre todos os produtores.
+   * - A duplicidade é verificada após a normalização.
+   *
+   * @param dto Objeto contendo o nome e o CPF/CNPJ do produtor
    * @returns O produtor criado, com ID e timestamps
+   * @throws {Error} Se já existir um produtor com o mesmo documento
    */
   create(dto: CreateProdutorDto): Produtor {
-    return this.produtorRepository.create(dto);
+    const documentoNormalizado = dto.documento.replace(/\D/g, "");
+
+    const produtorExistente = this.produtorRepository
+      .findAll()
+      .find((p) => p.documento === documentoNormalizado);
+
+    if (produtorExistente) {
+      throw new Error("Documento já cadastrado");
+    }
+
+    return this.produtorRepository.create({
+      ...dto,
+      documento: documentoNormalizado,
+    });
   }
 
   /**
@@ -46,7 +65,7 @@ export class ProdutorService {
    * @param id UUID do produtor
    * @returns O produtor correspondente, ou `undefined` se não existir
    */
-    findById(id: string): Produtor | undefined {
+  findById(id: string): Produtor | undefined {
     return this.produtorRepository.findById(id);
   }
 
@@ -61,20 +80,20 @@ export class ProdutorService {
     return this.produtorRepository.update(id, data);
   }
 
-    /**
+  /**
    * Remove um produtor pelo ID.
    *
    * @param id UUID do produtor a ser removido
    */
   delete(id: string): void {
-    const index = this.produtorRepository.findAll().findIndex(p => p.id === id);
+    const index = this.produtorRepository
+      .findAll()
+      .findIndex((p) => p.id === id);
 
     if (index === -1) {
-      throw new Error('Produtor não encontrado');
+      throw new Error("Produtor não encontrado");
     }
 
     this.produtorRepository.findAll().splice(index, 1);
   }
-
 }
-
