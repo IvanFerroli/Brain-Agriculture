@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, IsDateString } from 'class-validator';
+import { IsNotEmpty, IsString, IsDateString } from "class-validator";
 
 /**
  * Objeto de Transferência de Dados (DTO) para criação de uma nova safra.
@@ -18,6 +18,16 @@ export class CreateSafraDto {
   nome!: string;
 
   /**
+   * ID da cultura associada à safra.
+   *
+   * - Obrigatório
+   * - Deve ser uma string representando o UUID da cultura
+   */
+  @IsNotEmpty()
+  @IsString()
+  culturaId!: string;
+
+  /**
    * Data de início da safra.
    *
    * - Obrigatório
@@ -25,7 +35,7 @@ export class CreateSafraDto {
    */
   @IsNotEmpty()
   @IsDateString()
-  dataInicio!: string;
+  inicio!: string;
 
   /**
    * Data de término da safra.
@@ -35,5 +45,5 @@ export class CreateSafraDto {
    */
   @IsNotEmpty()
   @IsDateString()
-  dataFim!: string;
+  fim!: string;
 }

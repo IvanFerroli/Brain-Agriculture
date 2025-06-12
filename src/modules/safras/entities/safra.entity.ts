@@ -21,16 +21,27 @@ export class Safra {
   nome?: string;
 
   /**
+   * ID da cultura associada a esta safra.
+   *
+   * @example "cultura-uuid-9876"
+   */
+  culturaId?: string;
+
+  /**
    * Data de início da safra.
    * Representa quando a safra foi oficialmente iniciada.
+   *
+   * @example new Date("2023-09-01")
    */
-  dataInicio?: Date;
+  inicio?: Date;
 
   /**
    * Data de fim da safra.
    * Representa quando a safra foi oficialmente encerrada.
+   *
+   * @example new Date("2024-04-30")
    */
-  dataFim?: Date;
+  fim?: Date;
 
   /**
    * Data de criação do registro da safra no sistema.

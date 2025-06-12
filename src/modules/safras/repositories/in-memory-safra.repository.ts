@@ -1,7 +1,7 @@
-import { SafraRepository } from './safra.repository';
-import { Safra } from '../entities/safra.entity';
-import { CreateSafraDto } from '../dto/create-safra.dto';
-import { v4 as uuid } from 'uuid';
+import { SafraRepository } from "./safra.repository";
+import { Safra } from "../entities/safra.entity";
+import { CreateSafraDto } from "../dto/create-safra.dto";
+import { v4 as uuid } from "uuid";
 
 /**
  * Implementação em memória do repositório de safras.
@@ -17,8 +17,8 @@ export class InMemorySafraRepository implements SafraRepository {
       id: uuid(),
       nome: data.nome,
       culturaId: data.culturaId,
-      inicio: data.inicio,
-      fim: data.fim,
+      inicio: new Date(data.inicio),
+      fim: new Date(data.fim),
       criadoEm: new Date(),
       atualizadoEm: new Date(),
     };
@@ -32,7 +32,7 @@ export class InMemorySafraRepository implements SafraRepository {
   }
 
   findById(id: string): Safra | undefined {
-    return this.safras.find(s => s.id === id);
+    return this.safras.find((s) => s.id === id);
   }
 
   /**
@@ -45,7 +45,7 @@ export class InMemorySafraRepository implements SafraRepository {
   update(id: string, data: Partial<CreateSafraDto>): Safra {
     const safra = this.findById(id);
     if (!safra) {
-      throw new Error('Safra não encontrada');
+      throw new Error("Safra não encontrada");
     }
 
     Object.assign(safra, data, { atualizadoEm: new Date() });
