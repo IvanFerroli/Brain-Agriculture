@@ -4,8 +4,11 @@ import { SafraService } from '../services/safra.service';
 import { Safra } from '../entities/safra.entity';
 
 /**
- * Handler responsável por executar a query de busca de todas as safras.
+ * @module Safra
+ * @category Query Handler
  *
+ * @description
+ * Handler responsável por executar a query de busca de todas as safras.
  * Recebe a query `FindAllSafraQuery` e retorna a lista completa de safras
  * cadastradas no sistema, utilizando a lógica de serviço (Service Layer).
  */
