@@ -1,24 +1,21 @@
+import { CreateFazendaDto } from '../dto/create-fazenda.dto';
+
 /**
- * Comando responsável por atualizar os dados de uma fazenda existente.
- * 
- * Utilizado no padrão CQRS para desacoplar a intenção de atualização
- * da execução em si (handler).
+ * @module Fazenda
+ * @category Command
+ *
+ * @description
+ * Comando responsável por transportar os dados necessários para atualização
+ * de uma fazenda rural. Utilizado no padrão CQRS para desacoplar a intenção
+ * da execução, permitindo validação e controle no handler.
  */
 export class UpdateFazendaCommand {
   /**
-   * ID da fazenda a ser atualizada.
+   * @param id ID da fazenda a ser atualizada
+   * @param data Dados parciais a serem atualizados (nome, áreas, etc.)
    */
   constructor(
     public readonly id: string,
-
-    /**
-     * Dados parciais que serão atualizados na fazenda.
-     */
-    public readonly data: {
-      nome?: string;
-      areaTotal?: number;
-      areaAgricultavel?: number;
-      areaVegetacao?: number;
-    },
+    public readonly data: Partial<CreateFazendaDto>,
   ) {}
 }
