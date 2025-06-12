@@ -5,10 +5,10 @@ import { IsOptional, IsString, IsNumber, Min } from 'class-validator';
  * nas consultas de métricas do dashboard.
  *
  * Este DTO é passado via query string e permite restringir os resultados com base
- * em critérios como busca textual e intervalo de área da fazenda.
+ * em critérios como busca textual, estado, cultura e intervalo de área da fazenda.
  *
  * Exemplo de uso:
- * `/dashboard/metrics?search=João&areaMin=50&areaMax=200`
+ * `/dashboard/metrics?search=João&estado=SP&cultura=Soja&areaMin=50&areaMax=200`
  */
 export class DashboardFilterDto {
   /**
@@ -21,6 +21,26 @@ export class DashboardFilterDto {
   @IsOptional()
   @IsString()
   search?: string;
+
+  /**
+   * Estado da fazenda (UF) — utilizado para filtros geográficos.
+   *
+   * - Opcional
+   * - Deve ser uma string (ex: "SP", "MG")
+   */
+  @IsOptional()
+  @IsString()
+  estado?: string;
+
+  /**
+   * Cultura plantada (ex: Soja, Milho, Café).
+   *
+   * - Opcional
+   * - Deve ser uma string
+   */
+  @IsOptional()
+  @IsString()
+  cultura?: string;
 
   /**
    * Valor mínimo da área total ou agricultável das fazendas consideradas.
