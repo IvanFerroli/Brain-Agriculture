@@ -1,7 +1,22 @@
-import { IsNotEmpty, IsNumber, IsPositive, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsPositive, IsString, Validate } from 'class-validator';
+import { SomaAreasValidator } from '../validators/soma-areas.validator';
 
 /**
- * DTO responsável por validar os dados recebidos para criação de uma fazenda.
+ * @module Fazenda
+ * @category DTO
+ *
+ * @description
+ * Objeto de Transferência de Dados (DTO) para criação de uma nova fazenda.
+ *
+ * Este DTO é utilizado para validar e transportar os dados recebidos na requisição
+ * ao endpoint de criação de fazendas.
+ *
+ * Regras aplicadas:
+ * - Todos os campos são obrigatórios
+ * - Os valores numéricos devem ser positivos
+ * - A soma das áreas agricultável e de vegetação não pode exceder a área total
+ *
+ * @see SomaAreasValidator
  */
 export class CreateFazendaDto {
   /**
@@ -38,4 +53,11 @@ export class CreateFazendaDto {
   @IsString()
   @IsNotEmpty()
   produtorId!: string;
+
+  /**
+   * Campo auxiliar para ativar a validação de regra de negócio:
+   * a soma de áreas não deve exceder a área total.
+   */
+  @Validate(SomaAreasValidator)
+  validateSomaAreas!: this;
 }
