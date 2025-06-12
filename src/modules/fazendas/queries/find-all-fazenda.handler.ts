@@ -4,18 +4,24 @@ import { FazendaService } from '../services/fazenda.service';
 import { Fazenda } from '../entities/fazenda.entity';
 
 /**
- * Handler responsável por processar a query de listagem de todas as fazendas.
+ * @module Fazenda
+ * @category Query Handler
  *
- * Utiliza o service para retornar todas as entidades registradas.
+ * @description
+ * Handler responsável por executar a query de listagem de todas as fazendas.
+ * Utiliza o `FazendaService` para recuperar os dados cadastrados.
  */
 @QueryHandler(FindAllFazendasQuery)
 export class FindAllFazendasHandler implements IQueryHandler<FindAllFazendasQuery> {
   constructor(private readonly fazendaService: FazendaService) {}
 
   /**
-   * Executa a listagem completa de fazendas.
+   * Executa a consulta de todas as fazendas cadastradas.
+   *
+   * @param _query Instância da query (sem parâmetros neste caso)
+   * @returns Lista de fazendas
    */
-  async execute(_: FindAllFazendasQuery): Promise<Fazenda[]> {
+  async execute(_query: FindAllFazendasQuery): Promise<Fazenda[]> {
     return this.fazendaService.findAll();
   }
 }
