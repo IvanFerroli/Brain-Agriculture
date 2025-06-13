@@ -1,13 +1,13 @@
-import { Module } from '@nestjs/common';
-import { CqrsModule } from '@nestjs/cqrs';
+import { Module } from "@nestjs/common";
+import { CqrsModule } from "@nestjs/cqrs";
 
-import { CulturaController } from './controllers/cultura.controller';
-import { CulturaService } from './services/cultura.service';
+import { CulturaController } from "./controllers/cultura.controller";
+import { CulturaService } from "./services/cultura.service";
 
-import { CulturaRepository, InMemoryCulturaRepository } from './repositories';
+import { CulturaRepository, InMemoryCulturaRepository } from "./repositories";
 
-import { commandHandlers } from './commands';
-import { queryHandlers } from './queries';
+import { commandHandlers } from "./commands";
+import { queryHandlers } from "./queries";
 
 /**
  * Módulo responsável por encapsular toda a lógica relacionada ao domínio de culturas.
@@ -46,5 +46,6 @@ import { queryHandlers } from './queries';
       useClass: InMemoryCulturaRepository,
     },
   ],
+  exports: [CulturaService],
 })
 export class CulturaModule {}

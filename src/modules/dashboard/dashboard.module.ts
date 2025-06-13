@@ -4,6 +4,8 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { DashboardController } from './controllers/dashboard.controller';
 import { DashboardService } from './services/dashboard.service';
 import { GetDashboardMetricsHandler } from './queries/get-dashboard-metrics.handler';
+import { FazendaModule } from '../fazendas/fazenda.module';
+import { CulturaModule } from '../culturas/cultura.module';
 
 /**
  * @module Dashboard
@@ -20,6 +22,8 @@ import { GetDashboardMetricsHandler } from './queries/get-dashboard-metrics.hand
   imports: [
     // Módulo CQRS para permitir uso de QueryBus e CommandBus
     CqrsModule,
+    FazendaModule,
+    CulturaModule,
   ],
   controllers: [
     // Controlador que expõe os endpoints públicos de dashboard
