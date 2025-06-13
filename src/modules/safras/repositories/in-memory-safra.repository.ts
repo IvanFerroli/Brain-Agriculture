@@ -12,7 +12,13 @@ import { v4 as uuid } from "uuid";
 export class InMemorySafraRepository implements SafraRepository {
   private safras: Safra[] = [];
 
-  create(data: CreateSafraDto): Safra {
+  /**
+   * Cria uma nova safra.
+   *
+   * @param data Dados de criação da safra
+   * @returns A safra criada
+   */
+  async create(data: CreateSafraDto): Promise<Safra> {
     const nova: Safra = {
       id: uuid(),
       nome: data.nome,
@@ -27,11 +33,22 @@ export class InMemorySafraRepository implements SafraRepository {
     return nova;
   }
 
-  findAll(): Safra[] {
+  /**
+   * Retorna todas as safras cadastradas.
+   *
+   * @returns Lista de safras
+   */
+  async findAll(): Promise<Safra[]> {
     return this.safras;
   }
 
-  findById(id: string): Safra | undefined {
+  /**
+   * Busca uma safra pelo seu ID.
+   *
+   * @param id UUID da safra
+   * @returns A safra encontrada ou `undefined` se não existir
+   */
+  async findById(id: string): Promise<Safra | undefined> {
     return this.safras.find((s) => s.id === id);
   }
 
@@ -42,8 +59,8 @@ export class InMemorySafraRepository implements SafraRepository {
    * @param data Campos que devem ser atualizados
    * @returns A safra atualizada
    */
-  update(id: string, data: Partial<CreateSafraDto>): Safra {
-    const safra = this.findById(id);
+  async update(id: string, data: Partial<CreateSafraDto>): Promise<Safra> {
+    const safra = await this.findById(id);
     if (!safra) {
       throw new Error("Safra não encontrada");
     }

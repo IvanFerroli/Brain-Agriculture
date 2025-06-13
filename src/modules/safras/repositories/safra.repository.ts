@@ -14,14 +14,14 @@ export abstract class SafraRepository {
    * @param data Dados de criação da safra
    * @returns A safra criada
    */
-  abstract create(data: CreateSafraDto): Safra;
+  abstract create(data: CreateSafraDto): Promise<Safra>;
 
   /**
    * Retorna todas as safras cadastradas.
    *
    * @returns Lista de safras
    */
-  abstract findAll(): Safra[];
+  abstract findAll(): Promise<Safra[]>;
 
   /**
    * Busca uma safra pelo seu ID.
@@ -29,7 +29,7 @@ export abstract class SafraRepository {
    * @param id UUID da safra
    * @returns A safra encontrada ou `undefined` se não existir
    */
-  abstract findById(id: string): Safra | undefined;
+  abstract findById(id: string): Promise<Safra | undefined>;
 
   /**
    * Atualiza parcialmente os dados de uma safra existente.
@@ -38,5 +38,5 @@ export abstract class SafraRepository {
    * @param data Campos a serem atualizados
    * @returns A safra atualizada
    */
-  abstract update(id: string, data: Partial<CreateSafraDto>): Safra;
+  abstract update(id: string, data: Partial<CreateSafraDto>): Promise<Safra>;
 }

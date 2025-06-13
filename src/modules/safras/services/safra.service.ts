@@ -27,7 +27,7 @@ export class SafraService {
    * @param dto Objeto com nome e período da safra
    * @returns A safra criada, com ID e timestamps
    */
-  create(dto: CreateSafraDto): Safra {
+  async create(dto: CreateSafraDto): Promise<Safra> {
     return this.safraRepository.create(dto);
   }
 
@@ -36,7 +36,7 @@ export class SafraService {
    *
    * @returns Lista de safras
    */
-  findAll(): Safra[] {
+  async findAll(): Promise<Safra[]> {
     return this.safraRepository.findAll();
   }
 
@@ -46,7 +46,7 @@ export class SafraService {
    * @param id UUID da safra
    * @returns A safra correspondente, ou `undefined` se não existir
    */
-  findById(id: string): Safra | undefined {
+  async findById(id: string): Promise<Safra | undefined> {
     return this.safraRepository.findById(id);
   }
 
@@ -57,7 +57,7 @@ export class SafraService {
    * @param data Dados parciais a serem atualizados
    * @returns A safra atualizada
    */
-  update(id: string, data: Partial<CreateSafraDto>): Safra {
+  async update(id: string, data: Partial<CreateSafraDto>): Promise<Safra> {
     return this.safraRepository.update(id, data);
   }
 
@@ -66,13 +66,14 @@ export class SafraService {
    *
    * @param id UUID da safra a ser removida
    */
-  delete(id: string): void {
-    const index = this.safraRepository.findAll().findIndex(s => s.id === id);
+  async delete(id: string): Promise<void> {
+    const all = await this.safraRepository.findAll();
+    const index = all.findIndex(s => s.id === id);
 
     if (index === -1) {
       throw new Error('Safra não encontrada');
     }
 
-    this.safraRepository.findAll().splice(index, 1);
+    all.splice(index, 1);
   }
 }

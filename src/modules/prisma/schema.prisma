@@ -30,10 +30,14 @@ model Fazenda {
 }
 
 model Safra {
-  id        String   @id @default(uuid())
-  nome      String
-  ano       Int
-  culturas  Cultura[]
+  id          String   @id @default(uuid())
+  nome        String
+  ano         Int
+  inicio      DateTime
+  fim         DateTime
+  criadoEm    DateTime @default(now())
+  atualizadoEm DateTime @updatedAt
+  culturas    Cultura[]
 }
 
 model Cultura {

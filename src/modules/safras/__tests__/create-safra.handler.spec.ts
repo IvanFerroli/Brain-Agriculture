@@ -48,7 +48,8 @@ describe('CreateSafraHandler', () => {
       atualizadoEm: new Date(),
     };
 
-    service.create.mockReturnValue(safraCriada);
+    service.create.mockResolvedValue(safraCriada);
+
 
     const command = new CreateSafraCommand(dto);
     const result = await handler.execute(command);
@@ -67,9 +68,8 @@ describe('CreateSafraHandler', () => {
 
     const command = new CreateSafraCommand(dto);
 
-    service.create.mockImplementation(() => {
-      throw new Error('Cultura não encontrada');
-    });
+    service.create.mockRejectedValue(new Error('Cultura não encontrada'));
+
 
     await expect(handler.execute(command)).rejects.toThrow('Cultura não encontrada');
     expect(service.create).toHaveBeenCalledWith(dto);

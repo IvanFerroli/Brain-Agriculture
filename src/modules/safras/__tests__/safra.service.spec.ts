@@ -27,7 +27,7 @@ describe('SafraService - Método create()', () => {
     service = new SafraService(repo);
   });
 
-  it('deve criar uma safra com dados válidos', () => {
+  it('deve criar uma safra com dados válidos', async () => {
     const dto: CreateSafraDto = {
       nome: 'Safra 2023/2024',
       culturaId: 'uuid-cultura',
@@ -35,7 +35,7 @@ describe('SafraService - Método create()', () => {
       fim: '2024-04-30',
     };
 
-    const result = service.create(dto);
+    const result = await service.create(dto);
 
     expect(result).toHaveProperty('id');
     expect(result.nome).toBe(dto.nome);
@@ -44,7 +44,7 @@ describe('SafraService - Método create()', () => {
     expect(result.fim).toEqual(new Date(dto.fim));
   });
 
-  it('deve armazenar a safra com campos obrigatórios preenchidos', () => {
+  it('deve armazenar a safra com campos obrigatórios preenchidos', async () => {
     const dto: CreateSafraDto = {
       nome: 'Safra Teste',
       culturaId: 'cultura-test',
@@ -52,8 +52,8 @@ describe('SafraService - Método create()', () => {
       fim: '2023-06-01',
     };
 
-    const safra = service.create(dto);
-    const todas = service.findAll();
+    const safra = await service.create(dto);
+    const todas = await service.findAll();
 
     expect(todas).toContainEqual(safra);
     expect(todas.length).toBe(1);
