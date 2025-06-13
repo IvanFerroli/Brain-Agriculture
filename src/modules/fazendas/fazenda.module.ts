@@ -47,5 +47,6 @@ import { queryHandlers } from './queries';
       useClass: PrismaFazendaRepository,
     },
   ],
+  exports: [FazendaService],
 })
 export class FazendaModule {}
