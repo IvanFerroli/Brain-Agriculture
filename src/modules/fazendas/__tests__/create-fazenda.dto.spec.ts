@@ -34,6 +34,7 @@ describe('CreateFazendaDto - Validações e Regra de Soma de Áreas', () => {
 
   it('deve validar com sucesso quando todos os dados estão corretos', async () => {
     const dto = plainToInstance(CreateFazendaDto, baseData);
+    dto.validateSomaAreas = dto; // <-- ESSA LINHA ADICIONADA
     const errors = await validate(dto);
     expect(errors).toHaveLength(0);
   });
@@ -44,6 +45,7 @@ describe('CreateFazendaDto - Validações e Regra de Soma de Áreas', () => {
       areaAgricultavel: 70,
       areaVegetacao: 40, // 70 + 40 = 110 > 100
     });
+    dto.validateSomaAreas = dto; // <-- ESSA LINHA ADICIONADA
     const errors = await validate(dto);
     expect(errors).not.toHaveLength(0);
     const somaError = errors.find(e => e.property === 'validateSomaAreas');
@@ -52,8 +54,8 @@ describe('CreateFazendaDto - Validações e Regra de Soma de Áreas', () => {
   });
 
   it('deve falhar se algum campo obrigatório estiver ausente', async () => {
-    // Passar um objeto vazio para simular ausência de dados
     const dto = plainToInstance(CreateFazendaDto, {});
+    dto.validateSomaAreas = dto; // <-- ESSA LINHA ADICIONADA
     const errors = await validate(dto);
     expect(errors.length).toBeGreaterThan(0);
   });
@@ -65,6 +67,7 @@ describe('CreateFazendaDto - Validações e Regra de Soma de Áreas', () => {
       areaAgricultavel: 0,
       areaVegetacao: -5,
     });
+    dto.validateSomaAreas = dto; // <-- ESSA LINHA ADICIONADA
     const errors = await validate(dto);
     expect(errors.length).toBeGreaterThan(0);
   });
