@@ -27,41 +27,41 @@ describe('ProdutorService - Método create()', () => {
     service = new ProdutorService(repo);
   });
 
-  it('deve criar um produtor com documento válido e único', () => {
+  it('deve criar um produtor com documento válido e único', async () => {
     const dto: CreateProdutorDto = {
       nome: 'Maria Silva',
       documento: '123.456.789-00',
     };
 
-    const result = service.create(dto);
+    const result = await service.create(dto);
 
     expect(result).toHaveProperty('id');
     expect(result.nome).toBe('Maria Silva');
     expect(result.documento).toBe('12345678900'); // normalizado
   });
 
-  it('deve rejeitar criação se o documento já estiver cadastrado', () => {
+  it('deve rejeitar criação se o documento já estiver cadastrado', async () => {
     const dto: CreateProdutorDto = {
       nome: 'Carlos Souza',
       documento: '123.456.789-00',
     };
 
-    service.create(dto); // primeiro cadastro
+    await service.create(dto); // primeiro cadastro
 
-    expect(() => service.create(dto)).toThrowError('Documento já cadastrado');
+    await expect(service.create(dto)).rejects.toThrowError('Documento já cadastrado');
   });
 
-  it('deve rejeitar criação se o mesmo documento for inserido sem pontuação', () => {
-    service.create({
+  it('deve rejeitar criação se o mesmo documento for inserido sem pontuação', async () => {
+    await service.create({
       nome: 'João',
       documento: '123.456.789-00',
     });
 
-    expect(() =>
+    await expect(
       service.create({
         nome: 'João 2',
         documento: '12345678900',
       }),
-    ).toThrowError('Documento já cadastrado');
+    ).rejects.toThrowError('Documento já cadastrado');
   });
 });

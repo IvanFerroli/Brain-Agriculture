@@ -44,7 +44,7 @@ describe('CreateProdutorHandler', () => {
       atualizadoEm: new Date(),
     };
 
-    service.create.mockReturnValue(produtorCriado);
+    service.create.mockResolvedValue(produtorCriado);
 
     const command = new CreateProdutorCommand(dto);
     const result = await handler.execute(command);
