@@ -14,19 +14,70 @@ import { DashboardFilterDto } from "../dto/dashboard-filter.dto";
 describe("DashboardService", () => {
   let service: DashboardService;
 
+  // Mini seed mockado para simular o banco
+  const mockFazendas = [
+    { id: "1", estado: "SP", areaTotal: 200, areaAgricultavel: 120, areaVegetacao: 80, culturas: ["Soja"] },
+    { id: "2", estado: "SP", areaTotal: 200, areaAgricultavel: 110, areaVegetacao: 90, culturas: ["Soja"] },
+    { id: "3", estado: "MG", areaTotal: 500, areaAgricultavel: 350, areaVegetacao: 150, culturas: ["Café"] },
+  ];
+
+  const mockCulturas = [
+    { id: "c1", nome: "Soja", fazendaId: "1" },
+    { id: "c2", nome: "Soja", fazendaId: "2" },
+    { id: "c3", nome: "Café", fazendaId: "3" },
+  ];
+
+  // Helper para filtrar fazendas conforme DashboardFilterDto
+  function filtrarFazendas(filters: DashboardFilterDto) {
+    return mockFazendas.filter(f => {
+      if (filters.estado && f.estado !== filters.estado) return false;
+      if (filters.areaMin !== undefined && f.areaTotal < filters.areaMin) return false;
+      if (filters.areaMax !== undefined && f.areaTotal > filters.areaMax) return false;
+      if (filters.cultura) {
+        // Só entra se pelo menos uma cultura dessa fazenda bater
+        const temCultura = f.culturas.some(c => c === filters.cultura);
+        if (!temCultura) return false;
+      }
+      return true;
+    });
+  }
+
   beforeEach(() => {
     const mockFazendaService = {
-      countByFilters: jest.fn().mockResolvedValue(3),
-      sumAreaTotalByFilters: jest.fn().mockResolvedValue(900),
-      groupByEstado: jest.fn().mockResolvedValue({ SP: 2, MG: 1 }),
-      sumUsoDoSoloByFilters: jest.fn().mockResolvedValue({
-        areaAgricultavel: 580,
-        areaVegetacao: 320,
+      countByFilters: jest.fn(async (filters: DashboardFilterDto) => {
+        return filtrarFazendas(filters).length;
+      }),
+      sumAreaTotalByFilters: jest.fn(async (filters: DashboardFilterDto) => {
+        return filtrarFazendas(filters).reduce((acc, f) => acc + f.areaTotal, 0);
+      }),
+      groupByEstado: jest.fn(async (filters: DashboardFilterDto) => {
+        const filtered = filtrarFazendas(filters);
+        return filtered.reduce((acc, f) => {
+          acc[f.estado] = (acc[f.estado] || 0) + 1;
+          return acc;
+        }, {} as Record<string, number>);
+      }),
+      sumUsoDoSoloByFilters: jest.fn(async (filters: DashboardFilterDto) => {
+        const filtered = filtrarFazendas(filters);
+        return {
+          areaAgricultavel: filtered.reduce((acc, f) => acc + f.areaAgricultavel, 0),
+          areaVegetacao: filtered.reduce((acc, f) => acc + f.areaVegetacao, 0),
+        };
       }),
     };
 
     const mockCulturaService = {
-      groupByCultura: jest.fn().mockResolvedValue({ Soja: 2, Café: 1 }),
+      groupByCultura: jest.fn(async (filters: DashboardFilterDto) => {
+        // Busca só culturas das fazendas filtradas
+        const fazendasFiltradas = filtrarFazendas(filters).map(f => f.id);
+        const culturasFiltradas = mockCulturas.filter(c =>
+          fazendasFiltradas.includes(c.fazendaId)
+        );
+        return culturasFiltradas.reduce((acc, c) => {
+          acc[c.nome] = (acc[c.nome] || 0) + 1;
+          return acc;
+        }, {} as Record<string, number>);
+      }),
     };
 
     service = new DashboardService(

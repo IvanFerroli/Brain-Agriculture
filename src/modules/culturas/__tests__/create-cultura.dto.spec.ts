@@ -13,6 +13,7 @@ import { CreateCulturaDto } from '../dto/create-cultura.dto';
  * Esta suíte valida os campos:
  * - `nome`: obrigatório, string
  * - `safraId`: obrigatório, string (UUID da safra relacionada)
+ * - `fazendaId`: obrigatório, string (UUID da fazenda associada)
  *
  * Os testes garantem que:
  * - Valores válidos são aceitos
@@ -23,6 +24,7 @@ describe('CreateCulturaDto - Validação', () => {
     const dto = plainToInstance(CreateCulturaDto, {
       nome: 'Milho',
       safraId: 'a1b2c3d4-5678-9101-1121-314151617181',
+      fazendaId: 'f8d4b5a3-1234-4e9a-bb1e-abcde1234567',
     });
 
     const errors = await validate(dto);
@@ -33,6 +35,7 @@ describe('CreateCulturaDto - Validação', () => {
     const dto = plainToInstance(CreateCulturaDto, {
       nome: '',
       safraId: 'a1b2c3d4-5678-9101-1121-314151617181',
+      fazendaId: 'f8d4b5a3-1234-4e9a-bb1e-abcde1234567',
     });
 
     const errors = await validate(dto);
@@ -44,6 +47,7 @@ describe('CreateCulturaDto - Validação', () => {
     const dto = plainToInstance(CreateCulturaDto, {
       nome: 'Soja',
       safraId: '',
+      fazendaId: 'f8d4b5a3-1234-4e9a-bb1e-abcde1234567',
     });
 
     const errors = await validate(dto);
@@ -59,5 +63,6 @@ describe('CreateCulturaDto - Validação', () => {
 
     expect(props).toContain('nome');
     expect(props).toContain('safraId');
+    expect(props).toContain('fazendaId');
   });
 });

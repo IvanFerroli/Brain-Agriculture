@@ -2,7 +2,7 @@ import {
   ValidatorConstraint,
   ValidatorConstraintInterface,
   ValidationArguments,
-} from 'class-validator';
+} from "class-validator";
 
 /**
  * @module Fazenda
@@ -35,7 +35,7 @@ import {
  *
  * @see CreateFazendaDto
  */
-@ValidatorConstraint({ name: 'SomaAreasValidator', async: false })
+@ValidatorConstraint({ name: "SomaAreasValidator", async: false })
 export class SomaAreasValidator implements ValidatorConstraintInterface {
   /**
    * Valida a soma das áreas `areaAgricultavel` + `areaVegetacao` em relação à `areaTotal`.
@@ -44,11 +44,15 @@ export class SomaAreasValidator implements ValidatorConstraintInterface {
    * @returns `true` se a regra for satisfeita, `false` caso contrário
    */
   validate(dto: any): boolean {
+    if (!dto) {
+      return false;
+    }
+
     const { areaTotal, areaAgricultavel, areaVegetacao } = dto;
     if (
-      typeof areaTotal !== 'number' ||
-      typeof areaAgricultavel !== 'number' ||
-      typeof areaVegetacao !== 'number'
+      typeof areaTotal !== "number" ||
+      typeof areaAgricultavel !== "number" ||
+      typeof areaVegetacao !== "number"
     ) {
       return false;
     }
@@ -63,6 +67,6 @@ export class SomaAreasValidator implements ValidatorConstraintInterface {
    * @returns Mensagem personalizada explicando a violação
    */
   defaultMessage(args: ValidationArguments): string {
-    return 'A soma das áreas agricultável e de vegetação excede a área total da fazenda';
+    return "A soma das áreas agricultável e de vegetação excede a área total da fazenda";
   }
 }

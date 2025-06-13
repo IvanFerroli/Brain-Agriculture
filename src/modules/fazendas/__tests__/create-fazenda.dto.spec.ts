@@ -52,6 +52,7 @@ describe('CreateFazendaDto - Validações e Regra de Soma de Áreas', () => {
   });
 
   it('deve falhar se algum campo obrigatório estiver ausente', async () => {
+    // Passar um objeto vazio para simular ausência de dados
     const dto = plainToInstance(CreateFazendaDto, {});
     const errors = await validate(dto);
     expect(errors.length).toBeGreaterThan(0);
