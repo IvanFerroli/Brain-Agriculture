@@ -63,4 +63,12 @@ export class InMemoryCulturaRepository implements CulturaRepository {
       {} as Record<string, number>,
     );
   }
+
+  async deleteById(id: string): Promise<void> {
+    const index = this.culturas.findIndex((c) => c.id === id);
+    if (index === -1) {
+      throw new Error("Cultura não encontrada");
+    }
+    this.culturas.splice(index, 1);
+  }
 }

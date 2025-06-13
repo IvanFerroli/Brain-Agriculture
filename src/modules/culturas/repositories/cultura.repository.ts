@@ -50,4 +50,13 @@ export abstract class CulturaRepository {
    * @returns Objeto com nomes de culturas como chave e contagem como valor
    */
   abstract groupByCultura(filters: DashboardFilterDto): Promise<Record<string, number>>;
+
+    /**
+   * Remove uma cultura pelo ID.
+   *
+   * @param id UUID da cultura a ser removida
+   * @throws NotFoundException se não existir
+   */
+  abstract deleteById(id: string): Promise<void>;
+
 }

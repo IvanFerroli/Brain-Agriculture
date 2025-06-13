@@ -2,6 +2,7 @@ import {
   BadRequestException,
   ConflictException,
   Injectable,
+  NotFoundException,
 } from "@nestjs/common";
 import { CreateCulturaDto } from "../dto/create-cultura.dto";
 import { Cultura } from "../entities/cultura.entity";
@@ -64,8 +65,12 @@ export class CulturaService {
    * @param id UUID da cultura
    * @returns A cultura correspondente, ou `undefined` se não existir
    */
-  async findById(id: string): Promise<Cultura | undefined> {
-    return this.culturaRepository.findById(id);
+  async findById(id: string): Promise<Cultura> {
+    const cultura = await this.culturaRepository.findById(id);
+    if (!cultura) {
+      throw new NotFoundException("Cultura não encontrada");
+    }
+    return cultura;
   }
 
   /**
@@ -87,14 +92,7 @@ export class CulturaService {
    * @throws {BadRequestException} Se a cultura não for encontrada
    */
   async delete(id: string): Promise<void> {
-    const culturas = await this.culturaRepository.findAll();
-    const index = culturas.findIndex((c: Cultura) => c.id === id);
-
-    if (index === -1) {
-      throw new BadRequestException("Cultura não encontrada");
-    }
-
-    culturas.splice(index, 1);
+    return this.culturaRepository.deleteById(id);
   }
 
   /**

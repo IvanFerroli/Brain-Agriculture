@@ -108,6 +108,20 @@ export class PrismaCulturaRepository implements CulturaRepository {
       {} as Record<string, number>,
     );
   }
-
-  
+  /**
+   * Remove uma cultura pelo ID.
+   *
+   * @param id UUID da cultura a ser removida
+   * @throws NotFoundException se não existir
+   */
+  async deleteById(id: string): Promise<void> {
+    try {
+      await this.prisma.cultura.delete({ where: { id } });
+    } catch (e: any) {
+      if (e.code === "P2025") {
+        throw new NotFoundException("Cultura não encontrada");
+      }
+      throw e;
+    }
+  }
 }

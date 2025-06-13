@@ -1,18 +1,19 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
-import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { CreateCulturaDto } from '../dto/create-cultura.dto';
-import { Cultura } from '../entities/cultura.entity';
-import { CreateCulturaCommand } from '..//commands/create-cultura.command';
-import { UpdateCulturaCommand } from '../commands/update-cultura.command';
-import { FindAllCulturaQuery } from '../queries/find-all-cultura.query';
-import { FindCulturaByIdQuery } from '../queries/find-cultura-by-id.query';
+import { Body, Controller, Get, Delete, Param, Post, Put } from "@nestjs/common";
+import { CommandBus, QueryBus } from "@nestjs/cqrs";
+import { CreateCulturaDto } from "../dto/create-cultura.dto";
+import { Cultura } from "../entities/cultura.entity";
+import { CreateCulturaCommand } from "..//commands/create-cultura.command";
+import { UpdateCulturaCommand } from "../commands/update-cultura.command";
+import { FindAllCulturaQuery } from "../queries/find-all-cultura.query";
+import { FindCulturaByIdQuery } from "../queries/find-cultura-by-id.query";
+import { DeleteCulturaCommand } from "../commands/delete-cultura.command";
 
 /**
  * Controlador responsável por lidar com as requisições relacionadas às culturas.
  *
  * Todas as rotas deste controlador serão prefixadas por `/culturas`.
  */
-@Controller('culturas')
+@Controller("culturas")
 export class CulturaController {
   /**
    * Injeta os barramentos do CQRS (CommandBus e QueryBus).
@@ -52,8 +53,8 @@ export class CulturaController {
    * @param id UUID da cultura
    * @returns Cultura correspondente ou `undefined` se não encontrada
    */
-  @Get(':id')
-  async findById(@Param('id') id: string): Promise<Cultura | undefined> {
+  @Get(":id")
+  async findById(@Param("id") id: string): Promise<Cultura | undefined> {
     return this.queryBus.execute(new FindCulturaByIdQuery(id));
   }
 
@@ -64,11 +65,22 @@ export class CulturaController {
    * @param dto Campos parciais a serem atualizados (nome, safraId, etc.)
    * @returns A cultura atualizada
    */
-  @Put(':id')
+  @Put(":id")
   async update(
-    @Param('id') id: string,
+    @Param("id") id: string,
     @Body() dto: Partial<CreateCulturaDto>,
   ): Promise<Cultura> {
     return this.commandBus.execute(new UpdateCulturaCommand(id, dto));
+  }
+
+  /**
+   * Rota para remover uma cultura existente pelo ID.
+   *
+   * @param id UUID da cultura a ser removida
+   * @returns void
+   */
+  @Delete(":id")
+  async delete(@Param("id") id: string): Promise<void> {
+    return this.commandBus.execute(new DeleteCulturaCommand(id));
   }
 }
