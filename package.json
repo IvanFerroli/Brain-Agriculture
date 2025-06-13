@@ -11,7 +11,7 @@
     "lint": "eslint \"{src,test}/**/*.ts\" --fix",
     "test": "jest",
     "test:unit": "jest --testPathIgnorePatterns=integration.spec.ts",
-    "test:integration": "jest --testMatch \"**/*.integration.spec.ts\"",
+    "test:integration": "jest --testMatch \"**/*.integration.spec.ts\" --runInBand",
     "test:cov": "jest --coverage",
     "doc": "typedoc --entryPointStrategy expand"
   },
