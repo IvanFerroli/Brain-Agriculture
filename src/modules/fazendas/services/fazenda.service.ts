@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
-import { CreateFazendaDto } from '../dto/create-fazenda.dto';
-import { Fazenda } from '../entities/fazenda.entity';
-import { FazendaRepository } from '../repositories/fazenda.repository';
+import { Injectable } from "@nestjs/common";
+import { CreateFazendaDto } from "../dto/create-fazenda.dto";
+import { Fazenda } from "../entities/fazenda.entity";
+import { FazendaRepository } from "../repositories/fazenda.repository";
+import { DashboardFilterDto } from "@/modules/dashboard/dto/dashboard-filter.dto";
 
 /**
  * @module Fazenda
@@ -19,9 +20,7 @@ export class FazendaService {
    *
    * @param fazendaRepository Implementação concreta da interface `FazendaRepository`
    */
-  constructor(
-    private readonly fazendaRepository: FazendaRepository,
-  ) {}
+  constructor(private readonly fazendaRepository: FazendaRepository) {}
 
   /**
    * Cria uma nova fazenda com base nos dados validados.
@@ -75,9 +74,53 @@ export class FazendaService {
     const index = fazendas.findIndex((f) => f.id === id);
 
     if (index === -1) {
-      throw new Error('Fazenda não encontrada');
+      throw new Error("Fazenda não encontrada");
     }
 
     fazendas.splice(index, 1);
+  }
+
+  /**
+   * Retorna a quantidade total de fazendas que obedecem aos filtros opcionais.
+   *
+   * @param filters Filtros como estado, área mínima/máxima e termos de busca
+   * @returns Número total de fazendas encontradas
+   */
+  async countByFilters(filters: DashboardFilterDto): Promise<number> {
+    return this.fazendaRepository.countByFilters(filters);
+  }
+
+  /**
+   * Retorna a soma da área total das fazendas que obedecem aos filtros opcionais.
+   *
+   * @param filters Filtros como estado, área mínima/máxima e termo de busca
+   * @returns Soma da área total em hectares
+   */
+  async sumAreaTotalByFilters(filters: DashboardFilterDto): Promise<number> {
+    return this.fazendaRepository.sumAreaTotalByFilters(filters);
+  }
+
+  /**
+   * Agrupa as fazendas por estado e retorna a contagem de registros em cada um.
+   *
+   * @param filters Filtros opcionais a serem aplicados antes do agrupamento
+   * @returns Objeto com a contagem de fazendas por estado
+   */
+  async groupByEstado(
+    filters: DashboardFilterDto,
+  ): Promise<Record<string, number>> {
+    return this.fazendaRepository.groupByEstado(filters);
+  }
+
+  /**
+   * Retorna a soma total das áreas agricultáveis e de vegetação das fazendas filtradas.
+   *
+   * @param filters Filtros como estado, área mínima/máxima e termo de busca
+   * @returns Objeto com totais das áreas agricultáveis e vegetação
+   */
+  async sumUsoDoSoloByFilters(
+    filters: DashboardFilterDto,
+  ): Promise<{ areaAgricultavel: number; areaVegetacao: number }> {
+    return this.fazendaRepository.sumUsoDoSoloByFilters(filters);
   }
 }

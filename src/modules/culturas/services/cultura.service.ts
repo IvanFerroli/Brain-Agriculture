@@ -6,6 +6,7 @@ import {
 import { CreateCulturaDto } from "../dto/create-cultura.dto";
 import { Cultura } from "../entities/cultura.entity";
 import { CulturaRepository } from "../repositories/cultura.repository";
+import { DashboardFilterDto } from "@/modules/dashboard/dto/dashboard-filter.dto";
 
 /**
  * @module Cultura
@@ -94,5 +95,16 @@ export class CulturaService {
     }
 
     culturas.splice(index, 1);
+  }
+
+  /**
+   * Agrupa as culturas cadastradas por nome e retorna a quantidade de ocorrências.
+   *
+   * @returns Objeto com nomes das culturas como chave e contagem como valor
+   */
+  async groupByCultura(
+    filters: DashboardFilterDto,
+  ): Promise<Record<string, number>> {
+    return this.culturaRepository.groupByCultura(filters);
   }
 }

@@ -1,7 +1,7 @@
-import { CulturaRepository } from './cultura.repository';
-import { Cultura } from '../entities/cultura.entity';
-import { CreateCulturaDto } from '../dto/create-cultura.dto';
-import { v4 as uuid } from 'uuid';
+import { CulturaRepository } from "./cultura.repository";
+import { Cultura } from "../entities/cultura.entity";
+import { CreateCulturaDto } from "../dto/create-cultura.dto";
+import { v4 as uuid } from "uuid";
 
 /**
  * Implementação em memória do repositório de culturas.
@@ -31,7 +31,7 @@ export class InMemoryCulturaRepository implements CulturaRepository {
   }
 
   async findById(id: string): Promise<Cultura | undefined> {
-    return this.culturas.find(c => c.id === id);
+    return this.culturas.find((c) => c.id === id);
   }
 
   /**
@@ -44,10 +44,23 @@ export class InMemoryCulturaRepository implements CulturaRepository {
   async update(id: string, data: Partial<CreateCulturaDto>): Promise<Cultura> {
     const cultura = await this.findById(id);
     if (!cultura) {
-      throw new Error('Cultura não encontrada');
+      throw new Error("Cultura não encontrada");
     }
 
     Object.assign(cultura, data, { atualizadoEm: new Date() });
     return cultura;
+  }
+
+  async groupByCultura(): Promise<Record<string, number>> {
+    const all = await this.findAll();
+    return all.reduce(
+      (acc, cultura) => {
+        const nome = cultura.nome ?? "indefinido";
+        acc[nome] = (acc[nome] || 0) + 1;
+
+        return acc;
+      },
+      {} as Record<string, number>,
+    );
   }
 }

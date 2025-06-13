@@ -1,5 +1,6 @@
-import { CreateCulturaDto } from '../dto/create-cultura.dto';
-import { Cultura } from '../entities/cultura.entity';
+import { CreateCulturaDto } from "../dto/create-cultura.dto";
+import { Cultura } from "../entities/cultura.entity";
+import { DashboardFilterDto } from "@/modules/dashboard/dto/dashboard-filter.dto";
 
 /**
  * Interface de contrato para repositórios de Culturas.
@@ -38,5 +39,15 @@ export abstract class CulturaRepository {
    * @param data Campos a serem atualizados
    * @returns A cultura atualizada
    */
-  abstract update(id: string, data: Partial<CreateCulturaDto>): Promise<Cultura>;
+  abstract update(
+    id: string,
+    data: Partial<CreateCulturaDto>,
+  ): Promise<Cultura>;
+
+  /**
+   * Agrupa as culturas por nome e retorna a quantidade de ocorrências.
+   *
+   * @returns Objeto com nomes de culturas como chave e contagem como valor
+   */
+  abstract groupByCultura(filters: DashboardFilterDto): Promise<Record<string, number>>;
 }

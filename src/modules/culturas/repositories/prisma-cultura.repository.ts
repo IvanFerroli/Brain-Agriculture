@@ -88,4 +88,26 @@ export class PrismaCulturaRepository implements CulturaRepository {
       throw e;
     }
   }
+
+  /**
+   * Agrupa as culturas por nome e retorna a quantidade de ocorrências de cada uma.
+   *
+   * @returns Objeto com nome da cultura como chave e contagem como valor
+   */
+  async groupByCultura(): Promise<Record<string, number>> {
+    const grouped = await this.prisma.cultura.groupBy({
+      by: ["nome"],
+      _count: { nome: true },
+    });
+
+    return grouped.reduce(
+      (acc, item) => {
+        acc[item.nome] = item._count.nome;
+        return acc;
+      },
+      {} as Record<string, number>,
+    );
+  }
+
+  
 }
