@@ -49,4 +49,19 @@ export class InMemoryProdutorRepository implements ProdutorRepository {
     Object.assign(produtor, data, { atualizadoEm: new Date() });
     return produtor;
   }
+
+    /**
+   * Remove um produtor pelo ID (InMemory).
+   *
+   * @param id UUID do produtor a ser removido
+   * @throws Error se não existir
+   */
+  async deleteById(id: string): Promise<void> {
+    const index = this.produtores.findIndex((p) => p.id === id);
+    if (index === -1) {
+      throw new Error('Produtor não encontrado');
+    }
+    this.produtores.splice(index, 1);
+  }
+
 }

@@ -40,7 +40,7 @@ export class PrismaProdutorRepository implements ProdutorRepository {
     })) ?? undefined;
   }
 
-  async update(id: string, data: Partial<CreateProdutorDto>): Promise<Produtor> {
+    async update(id: string, data: Partial<CreateProdutorDto>): Promise<Produtor> {
     try {
       return await this.prisma.produtor.update({
         where: { id },
@@ -56,4 +56,22 @@ export class PrismaProdutorRepository implements ProdutorRepository {
       throw e;
     }
   }
+
+  /**
+   * Remove um produtor pelo ID.
+   *
+   * @param id UUID do produtor a ser removido
+   * @throws NotFoundException se não existir
+   */
+  async deleteById(id: string): Promise<void> {
+    try {
+      await this.prisma.produtor.delete({ where: { id } });
+    } catch (e: any) {
+      if (e.code === 'P2025') {
+        throw new NotFoundException('Produtor não encontrado');
+      }
+      throw e;
+    }
+  }
 }
+

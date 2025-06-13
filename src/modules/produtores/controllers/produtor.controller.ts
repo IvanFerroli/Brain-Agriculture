@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { CreateProdutorDto } from '../dto/create-produtor.dto';
 import { Produtor } from '../entities/produtor.entity';
@@ -6,6 +6,7 @@ import { CreateProdutorCommand } from '../commands/create-produtor.command';
 import { UpdateProdutorCommand } from '../commands/update-produtor.command';
 import { FindAllProdutoresQuery } from '../queries/find-all-produtores.query';
 import { FindProdutorByIdQuery } from '../queries/find-produtor-by-id.query';
+import { DeleteProdutorCommand } from '../commands/delete-produtor.command'
 
 /**
  * Controlador responsável por lidar com as requisições relacionadas aos produtores.
@@ -71,4 +72,16 @@ export class ProdutorController {
   ): Promise<Produtor> {
     return this.commandBus.execute(new UpdateProdutorCommand(id, dto));
   }
+
+    /**
+   * Rota para remover um produtor existente pelo ID.
+   *
+   * @param id UUID do produtor a ser removido
+   * @returns void
+   */
+  @Delete(':id')
+  async delete(@Param('id') id: string): Promise<void> {
+    return this.commandBus.execute(new DeleteProdutorCommand(id));
+  }
+
 }

@@ -39,4 +39,15 @@ export abstract class ProdutorRepository {
    * @returns O produtor atualizado
    */
   abstract update(id: string, data: Partial<CreateProdutorDto>): Promise<Produtor>;
+
+    /**
+   * Remove um produtor pelo ID.
+   *
+   * @param id UUID do produtor a ser removido
+   * @returns Promise<void>
+   *
+   * @throws NotFoundException se o produtor não for encontrado
+   */
+  abstract deleteById(id: string): Promise<void>;
+
 }

@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateProdutorDto } from "../dto/create-produtor.dto";
 import { Produtor } from "../entities/produtor.entity";
 import { ProdutorRepository } from "../repositories/produtor.repository";
@@ -43,8 +43,12 @@ export class ProdutorService {
   /**
    * Busca um produtor pelo ID.
    */
-  async findById(id: string): Promise<Produtor | undefined> {
-    return this.produtorRepository.findById(id);
+  async findById(id: string): Promise<Produtor> {
+    const produtor = await this.produtorRepository.findById(id);
+    if (!produtor) {
+      throw new NotFoundException('Produtor não encontrado');
+    }
+    return produtor;
   }
 
   /**
@@ -54,17 +58,14 @@ export class ProdutorService {
     return this.produtorRepository.update(id, data);
   }
 
-  /**
+    /**
    * Remove um produtor pelo ID.
+   *
+   * @param id UUID do produtor a ser removido
+   * @throws NotFoundException se não existir
    */
   async delete(id: string): Promise<void> {
-    const produtores = await this.produtorRepository.findAll();
-    const index = produtores.findIndex((p: Produtor) => p.id === id);
-
-    if (index === -1) {
-      throw new Error("Produtor não encontrado");
-    }
-
-    produtores.splice(index, 1);
+    return this.produtorRepository.deleteById(id);
   }
+
 }
