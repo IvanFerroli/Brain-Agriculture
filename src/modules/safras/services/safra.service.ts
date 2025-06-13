@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common';
-import { CreateSafraDto } from '../dto/create-safra.dto';
-import { Safra } from '../entities/safra.entity';
-import { SafraRepository } from '../repositories/safra.repository';
+import { Injectable, NotFoundException } from "@nestjs/common";
+import { CreateSafraDto } from "../dto/create-safra.dto";
+import { Safra } from "../entities/safra.entity";
+import { SafraRepository } from "../repositories/safra.repository";
 
 /**
  * Service responsável pelas regras de negócio das safras.
@@ -17,9 +17,7 @@ export class SafraService {
    *
    * @param safraRepository Implementação concreta da interface de repositório (ex: InMemorySafraRepository)
    */
-  constructor(
-    private readonly safraRepository: SafraRepository,
-  ) {}
+  constructor(private readonly safraRepository: SafraRepository) {}
 
   /**
    * Cria uma nova safra chamando o repositório correspondente.
@@ -44,10 +42,15 @@ export class SafraService {
    * Busca uma safra pelo ID.
    *
    * @param id UUID da safra
-   * @returns A safra correspondente, ou `undefined` se não existir
+   * @returns A safra correspondente
+   * @throws NotFoundException se a safra não for encontrada
    */
-  async findById(id: string): Promise<Safra | undefined> {
-    return this.safraRepository.findById(id);
+  async findById(id: string): Promise<Safra> {
+    const safra = await this.safraRepository.findById(id);
+    if (!safra) {
+      throw new NotFoundException("Safra não encontrada");
+    }
+    return safra;
   }
 
   /**
@@ -61,19 +64,13 @@ export class SafraService {
     return this.safraRepository.update(id, data);
   }
 
-  /**
+    /**
    * Remove uma safra pelo ID.
    *
    * @param id UUID da safra a ser removida
+   * @throws NotFoundException se a safra não existir
    */
   async delete(id: string): Promise<void> {
-    const all = await this.safraRepository.findAll();
-    const index = all.findIndex(s => s.id === id);
-
-    if (index === -1) {
-      throw new Error('Safra não encontrada');
-    }
-
-    all.splice(index, 1);
+    return this.safraRepository.deleteById(id);
   }
 }

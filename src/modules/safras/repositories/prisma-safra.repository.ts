@@ -97,4 +97,20 @@ export class PrismaSafraRepository implements SafraRepository {
       throw e;
     }
   }
+  /**
+   * Remove uma safra pelo ID.
+   *
+   * @param id UUID da safra a ser removida
+   * @throws NotFoundException se a safra não existir
+   */
+  async deleteById(id: string): Promise<void> {
+    try {
+      await this.prisma.safra.delete({ where: { id } });
+    } catch (e: any) {
+      if (e.code === "P2025") {
+        throw new NotFoundException("Safra não encontrada");
+      }
+      throw e;
+    }
+  }
 }

@@ -68,4 +68,17 @@ export class InMemorySafraRepository implements SafraRepository {
     Object.assign(safra, data, { atualizadoEm: new Date() });
     return safra;
   }
+  /**
+   * Remove uma safra pelo ID (InMemory).
+   *
+   * @param id UUID da safra a ser removida
+   * @throws Error se a safra não for encontrada
+   */
+  async deleteById(id: string): Promise<void> {
+    const index = this.safras.findIndex((s) => s.id === id);
+    if (index === -1) {
+      throw new Error("Safra não encontrada");
+    }
+    this.safras.splice(index, 1);
+  }
 }

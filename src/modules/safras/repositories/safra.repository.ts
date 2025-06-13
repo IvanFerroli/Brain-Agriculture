@@ -1,5 +1,5 @@
-import { CreateSafraDto } from '../dto/create-safra.dto';
-import { Safra } from '../entities/safra.entity';
+import { CreateSafraDto } from "../dto/create-safra.dto";
+import { Safra } from "../entities/safra.entity";
 
 /**
  * Interface de contrato para repositórios de Safras.
@@ -39,4 +39,11 @@ export abstract class SafraRepository {
    * @returns A safra atualizada
    */
   abstract update(id: string, data: Partial<CreateSafraDto>): Promise<Safra>;
+
+  /**
+   * Remove um registro pelo ID.
+   * @param id UUID do registro
+   * @throws NotFoundException se não existir
+   */
+  abstract deleteById(id: string): Promise<void>;
 }
