@@ -27,58 +27,65 @@ describe('CulturaService - Método create()', () => {
     service = new CulturaService(repo);
   });
 
-  it('deve criar uma cultura válida com nome único por safra', () => {
+  it('deve criar uma cultura válida com nome único por safra', async () => {
     const dto: CreateCulturaDto = {
       nome: 'Soja',
       safraId: 'safra-2025',
+      fazendaId: 'fazenda-1',
     };
 
-    const result = service.create(dto);
+    const result = await service.create(dto);
 
     expect(result).toHaveProperty('id');
     expect(result.nome).toBe('Soja');
     expect(result.safraId).toBe('safra-2025');
   });
 
-  it('deve impedir cadastro de nome duplicado na mesma safra', () => {
-    service.create({
+  it('deve impedir cadastro de nome duplicado na mesma safra', async () => {
+    await service.create({
       nome: 'Soja',
       safraId: 'safra-2025',
+      fazendaId: 'fazenda-1',
     });
 
-    expect(() =>
+    await expect(
       service.create({
         nome: 'Soja',
         safraId: 'safra-2025',
+        fazendaId: 'fazenda-1',
       }),
-    ).toThrowError('Cultura já cadastrada para essa safra');
+    ).rejects.toThrowError('Cultura já cadastrada para essa safra');
   });
 
-  it('deve tratar variações de caixa e espaço como duplicação', () => {
-    service.create({
+  it('deve tratar variações de caixa e espaço como duplicação', async () => {
+    await service.create({
       nome: '  milho  ',
       safraId: 'safra-2024',
+      fazendaId: 'fazenda-1',
     });
 
-    expect(() =>
+    await expect(
       service.create({
         nome: 'MILHO',
         safraId: 'safra-2024',
+        fazendaId: 'fazenda-1',
       }),
-    ).toThrowError('Cultura já cadastrada para essa safra');
+    ).rejects.toThrowError('Cultura já cadastrada para essa safra');
   });
 
-  it('deve permitir mesmo nome em safras diferentes', () => {
-    service.create({
+  it('deve permitir mesmo nome em safras diferentes', async () => {
+    await service.create({
       nome: 'Arroz',
       safraId: 'safra-2023',
+      fazendaId: 'fazenda-1',
     });
 
-    expect(() =>
+    await expect(
       service.create({
         nome: 'Arroz',
         safraId: 'safra-2024',
+        fazendaId: 'fazenda-1',
       }),
-    ).not.toThrow();
+    ).resolves.not.toThrow();
   });
 });

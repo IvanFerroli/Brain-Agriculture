@@ -14,14 +14,14 @@ export abstract class CulturaRepository {
    * @param data Dados de criação da cultura
    * @returns A cultura criada
    */
-  abstract create(data: CreateCulturaDto): Cultura;
+  abstract create(data: CreateCulturaDto): Promise<Cultura>;
 
   /**
    * Retorna todas as culturas cadastradas.
    *
    * @returns Lista de culturas
    */
-  abstract findAll(): Cultura[];
+  abstract findAll(): Promise<Cultura[]>;
 
   /**
    * Busca uma cultura pelo seu ID.
@@ -29,7 +29,7 @@ export abstract class CulturaRepository {
    * @param id UUID da cultura
    * @returns A cultura encontrada ou `undefined` se não existir
    */
-  abstract findById(id: string): Cultura | undefined;
+  abstract findById(id: string): Promise<Cultura | undefined>;
 
   /**
    * Atualiza parcialmente os dados de uma cultura existente.
@@ -38,5 +38,5 @@ export abstract class CulturaRepository {
    * @param data Campos a serem atualizados
    * @returns A cultura atualizada
    */
-  abstract update(id: string, data: Partial<CreateCulturaDto>): Cultura;
+  abstract update(id: string, data: Partial<CreateCulturaDto>): Promise<Cultura>;
 }

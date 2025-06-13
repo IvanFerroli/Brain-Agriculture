@@ -12,7 +12,17 @@ import { PrismaService } from './prisma.service';
  */
 @Global()
 @Module({
-  providers: [PrismaService],
-  exports: [PrismaService],
+  providers: [
+    /**
+     * Serviço que encapsula a comunicação com o Prisma Client.
+     */
+    PrismaService,
+  ],
+  exports: [
+    /**
+     * Torna o PrismaService disponível globalmente.
+     */
+    PrismaService,
+  ],
 })
 export class PrismaModule {}

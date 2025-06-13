@@ -16,6 +16,7 @@ describe('CreateCulturaCommand', () => {
     const dto: CreateCulturaDto = {
       nome: 'Feijão',
       safraId: 'uuid-safra',
+      fazendaId: 'uuid-fazenda',
     };
 
     const command = new CreateCulturaCommand(dto);

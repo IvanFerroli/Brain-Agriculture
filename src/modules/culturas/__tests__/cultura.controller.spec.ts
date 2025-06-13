@@ -42,6 +42,7 @@ describe('CulturaController', () => {
     const dto: CreateCulturaDto = {
       nome: 'Soja',
       safraId: 'uuid-safra',
+      fazendaId: 'uuid-fazenda',
     };
 
     const culturaCriada: Cultura = {

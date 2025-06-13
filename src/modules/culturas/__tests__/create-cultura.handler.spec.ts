@@ -34,6 +34,7 @@ describe('CreateCulturaHandler', () => {
     const dto = {
       nome: 'Soja',
       safraId: 'uuid-safra',
+      fazendaId: 'uuid-fazenda',
     };
 
     const culturaCriada: Cultura = {
@@ -57,6 +58,7 @@ describe('CreateCulturaHandler', () => {
     const dto = {
       nome: 'Milho',
       safraId: 'uuid-safra',
+      fazendaId: 'uuid-fazenda',
     };
 
     const command = new CreateCulturaCommand(dto);

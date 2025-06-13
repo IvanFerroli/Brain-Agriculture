@@ -20,26 +20,26 @@ export class CulturaService {
   /**
    * Injeta o repositório de culturas que implementa o contrato `CulturaRepository`.
    *
-   * @param culturaRepository Implementação concreta da interface de repositório (ex: InMemoryCulturaRepository)
+   * @param culturaRepository Implementação concreta da interface de repositório (ex: PrismaCulturaRepository)
    */
   constructor(private readonly culturaRepository: CulturaRepository) {}
 
   /**
    * Cria uma nova cultura, garantindo que o nome seja único dentro da mesma safra.
    *
-   * @param dto Objeto com nome e safraId da cultura
+   * @param dto Objeto com nome, safraId e fazendaId da cultura
    * @returns A cultura criada, com ID e timestamps
    *
    * @throws {ConflictException} Se já existir cultura com mesmo nome na mesma safra
    */
-  create(dto: CreateCulturaDto): Cultura {
-    const existe = this.culturaRepository
-      .findAll()
-      .some(
-        (c) =>
-          c?.nome?.trim().toLowerCase() === dto.nome.trim().toLowerCase() &&
-          c?.safraId === dto.safraId,
-      );
+  async create(dto: CreateCulturaDto): Promise<Cultura> {
+    const culturas = await this.culturaRepository.findAll();
+
+    const existe = culturas.some(
+      (c: Cultura) =>
+        c?.nome?.trim().toLowerCase() === dto.nome.trim().toLowerCase() &&
+        c?.safraId === dto.safraId,
+    );
 
     if (existe) {
       throw new ConflictException("Cultura já cadastrada para essa safra");
@@ -53,7 +53,7 @@ export class CulturaService {
    *
    * @returns Lista de culturas
    */
-  findAll(): Cultura[] {
+  async findAll(): Promise<Cultura[]> {
     return this.culturaRepository.findAll();
   }
 
@@ -63,7 +63,7 @@ export class CulturaService {
    * @param id UUID da cultura
    * @returns A cultura correspondente, ou `undefined` se não existir
    */
-  findById(id: string): Cultura | undefined {
+  async findById(id: string): Promise<Cultura | undefined> {
     return this.culturaRepository.findById(id);
   }
 
@@ -74,7 +74,7 @@ export class CulturaService {
    * @param data Dados parciais a serem atualizados
    * @returns A cultura atualizada
    */
-  update(id: string, data: Partial<CreateCulturaDto>): Cultura {
+  async update(id: string, data: Partial<CreateCulturaDto>): Promise<Cultura> {
     return this.culturaRepository.update(id, data);
   }
 
@@ -85,15 +85,14 @@ export class CulturaService {
    *
    * @throws {BadRequestException} Se a cultura não for encontrada
    */
-  delete(id: string): void {
-    const index = this.culturaRepository
-      .findAll()
-      .findIndex((c) => c.id === id);
+  async delete(id: string): Promise<void> {
+    const culturas = await this.culturaRepository.findAll();
+    const index = culturas.findIndex((c: Cultura) => c.id === id);
 
     if (index === -1) {
       throw new BadRequestException("Cultura não encontrada");
     }
 
-    this.culturaRepository.findAll().splice(index, 1);
+    culturas.splice(index, 1);
   }
 }

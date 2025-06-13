@@ -12,11 +12,12 @@ import { v4 as uuid } from 'uuid';
 export class InMemoryCulturaRepository implements CulturaRepository {
   private culturas: Cultura[] = [];
 
-  create(data: CreateCulturaDto): Cultura {
+  async create(data: CreateCulturaDto): Promise<Cultura> {
     const nova: Cultura = {
       id: uuid(),
       nome: data.nome,
       safraId: data.safraId,
+      fazendaId: data.fazendaId,
       criadoEm: new Date(),
       atualizadoEm: new Date(),
     };
@@ -25,11 +26,11 @@ export class InMemoryCulturaRepository implements CulturaRepository {
     return nova;
   }
 
-  findAll(): Cultura[] {
+  async findAll(): Promise<Cultura[]> {
     return this.culturas;
   }
 
-  findById(id: string): Cultura | undefined {
+  async findById(id: string): Promise<Cultura | undefined> {
     return this.culturas.find(c => c.id === id);
   }
 
@@ -40,8 +41,8 @@ export class InMemoryCulturaRepository implements CulturaRepository {
    * @param data Campos que devem ser atualizados
    * @returns A cultura atualizada
    */
-  update(id: string, data: Partial<CreateCulturaDto>): Cultura {
-    const cultura = this.findById(id);
+  async update(id: string, data: Partial<CreateCulturaDto>): Promise<Cultura> {
+    const cultura = await this.findById(id);
     if (!cultura) {
       throw new Error('Cultura não encontrada');
     }

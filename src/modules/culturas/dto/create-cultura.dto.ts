@@ -30,4 +30,17 @@ export class CreateCulturaDto {
   @IsNotEmpty()
   @IsString()
   safraId!: string;
+
+  /**
+   * ID da fazenda onde a cultura será plantada.
+   *
+   * - Obrigatório
+   * - Deve ser uma string representando o UUID da fazenda
+   *
+   * @example "f8d4b5a3-1234-4e9a-bb1e-abcde1234567"
+   */
+  @IsNotEmpty()
+  @IsString()
+  fazendaId!: string;
 }
+

@@ -1,9 +1,3 @@
-/**
- * Representa uma cultura agrícola dentro do sistema.
- *
- * Essa classe é usada como referência de tipo em outras camadas da aplicação,
- * como services, controllers e DTOs.
- */
 export class Cultura {
   /**
    * Identificador único da cultura (geralmente um UUID).
@@ -26,6 +20,13 @@ export class Cultura {
    * @example "safra-uuid-5678"
    */
   safraId?: string;
+
+  /**
+   * ID da fazenda à qual essa cultura pertence.
+   *
+   * @example "fazenda-uuid-9012"
+   */
+  fazendaId?: string;
 
   /**
    * Data de criação do registro da cultura no sistema.
