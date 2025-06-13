@@ -1,0 +1,47 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Produtor {
+  id         String     @id @default(uuid())
+  nome       String
+  documento  String     @unique
+  criadoEm   DateTime   @default(now())
+  atualizadoEm DateTime @updatedAt
+  fazendas   Fazenda[]
+}
+
+model Fazenda {
+  id               String   @id @default(uuid())
+  nome             String
+  cidade           String
+  estado           String
+  areaTotal        Float
+  areaAgricultavel Float
+  areaVegetacao    Float
+  produtorId       String
+  produtor         Produtor @relation(fields: [produtorId], references: [id], onDelete: Cascade)
+  culturas         Cultura[]
+}
+
+model Safra {
+  id        String   @id @default(uuid())
+  nome      String
+  ano       Int
+  culturas  Cultura[]
+}
+
+model Cultura {
+  id        String   @id @default(uuid())
+  nome      String
+  fazendaId String
+  safraId   String
+  fazenda   Fazenda  @relation(fields: [fazendaId], references: [id], onDelete: Cascade)
+  safra     Safra    @relation(fields: [safraId], references: [id], onDelete: Cascade)
+}
+
