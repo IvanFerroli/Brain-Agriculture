@@ -1,9 +1,8 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
-import { AppModule } from '../../../app.module';
-import * as request from 'supertest';
-import { PrismaClient } from '@prisma/client';
-
+import { Test, TestingModule } from "@nestjs/testing";
+import { INestApplication } from "@nestjs/common";
+import { AppModule } from "../../../app.module";
+import * as request from "supertest";
+import { PrismaClient } from "@prisma/client";
 
 /**
  * @file produtor.integration.spec.ts
@@ -13,7 +12,7 @@ import { PrismaClient } from '@prisma/client';
  * Executa requests HTTP contra a aplicação NestJS real, usando banco via Prisma.
  */
 
-describe('ProdutorController (integration)', () => {
+describe("ProdutorController (integration)", () => {
   let app: INestApplication;
   let prisma: PrismaClient;
 
@@ -39,37 +38,40 @@ describe('ProdutorController (integration)', () => {
     await prisma.$disconnect();
   });
 
-  it('deve criar, listar e deletar um produtor (fluxo completo)', async () => {
-    const createDto = { nome: 'Produtor Integração', documento: '99999999999' };
+  it("deve criar, listar e deletar um produtor (fluxo completo)", async () => {
+    const createDto = { nome: "Produtor Integração", documento: "99999999999" };
     const resCreate = await request(app.getHttpServer())
-      .post('/produtores')
+      .post("/produtores")
       .send(createDto)
       .expect(201);
 
-    expect(resCreate.body).toHaveProperty('id');
-    expect(resCreate.body.nome).toBe('Produtor Integração');
+    expect(resCreate.body).toHaveProperty("id");
+    expect(resCreate.body.nome).toBe("Produtor Integração");
 
     const id = resCreate.body.id;
 
     const resAll = await request(app.getHttpServer())
-      .get('/produtores')
+      .get("/produtores")
       .expect(200);
 
     expect(Array.isArray(resAll.body)).toBe(true);
-    expect(resAll.body.length).toBe(1);
+    expect(
+      resAll.body.some(
+        (p: any) =>
+          p.id === id &&
+          p.nome === createDto.nome &&
+          p.documento === createDto.documento,
+      ),
+    ).toBe(true);
 
     const resOne = await request(app.getHttpServer())
       .get(`/produtores/${id}`)
       .expect(200);
 
-    expect(resOne.body.nome).toBe('Produtor Integração');
+    expect(resOne.body.nome).toBe("Produtor Integração");
 
-    await request(app.getHttpServer())
-      .delete(`/produtores/${id}`)
-      .expect(200);
+    await request(app.getHttpServer()).delete(`/produtores/${id}`).expect(200);
 
-    await request(app.getHttpServer())
-      .get(`/produtores/${id}`)
-      .expect(404);
+    await request(app.getHttpServer()).get(`/produtores/${id}`).expect(404);
   });
 });

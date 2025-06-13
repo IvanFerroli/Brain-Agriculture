@@ -31,7 +31,16 @@ describe('FazendaService - Método create()', () => {
       produtorId: 'produtor-123',
     };
 
-    await expect(service.create(dto)).resolves.toBeUndefined();
+    const created = await service.create(dto);
+
+    expect(created).toMatchObject({
+      nome: dto.nome,
+      areaTotal: dto.areaTotal,
+      areaAgricultavel: dto.areaAgricultavel,
+      areaVegetacao: dto.areaVegetacao,
+      produtorId: dto.produtorId,
+    });
+    expect(created.id).toBeDefined();
   });
 
   it('deve lançar erro ao tentar deletar uma fazenda inexistente', async () => {
