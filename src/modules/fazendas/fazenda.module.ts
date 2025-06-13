@@ -4,7 +4,8 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { FazendaController } from './controllers/fazenda.controller';
 import { FazendaService } from './services/fazenda.service';
 
-import { FazendaRepository, InMemoryFazendaRepository } from './repositories';
+import { FazendaRepository } from './repositories/fazenda.repository';
+import { PrismaFazendaRepository } from './repositories/prisma-fazenda.repository';
 
 import { commandHandlers } from './commands';
 import { queryHandlers } from './queries';
@@ -43,7 +44,7 @@ import { queryHandlers } from './queries';
      */
     {
       provide: FazendaRepository,
-      useClass: InMemoryFazendaRepository,
+      useClass: PrismaFazendaRepository,
     },
   ],
 })

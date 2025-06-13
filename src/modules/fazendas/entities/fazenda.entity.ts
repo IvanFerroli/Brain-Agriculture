@@ -21,6 +21,20 @@ export class Fazenda {
   nome?: string;
 
   /**
+   * Cidade onde a fazenda está localizada.
+   *
+   * @example "Campina Grande"
+   */
+  cidade?: string;
+
+  /**
+   * Estado (UF) da fazenda.
+   *
+   * @example "PB"
+   */
+  estado?: string;
+
+  /**
    * Área total da fazenda em hectares.
    *
    * @example 100.5

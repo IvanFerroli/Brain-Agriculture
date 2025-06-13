@@ -14,14 +14,14 @@ export abstract class ProdutorRepository {
    * @param data Dados de criação do produtor
    * @returns O produtor criado
    */
-  abstract create(data: CreateProdutorDto): Produtor;
+  abstract create(data: CreateProdutorDto): Promise<Produtor>;
 
   /**
    * Retorna todos os produtores cadastrados.
    *
    * @returns Lista de produtores
    */
-  abstract findAll(): Produtor[];
+  abstract findAll(): Promise<Produtor[]>;
 
   /**
    * Busca um produtor pelo seu ID.
@@ -29,7 +29,7 @@ export abstract class ProdutorRepository {
    * @param id UUID do produtor
    * @returns O produtor encontrado ou `undefined` se não existir
    */
-  abstract findById(id: string): Produtor | undefined;
+  abstract findById(id: string): Promise<Produtor | undefined>;
 
   /**
    * Atualiza parcialmente os dados de um produtor existente.
@@ -38,5 +38,5 @@ export abstract class ProdutorRepository {
    * @param data Campos a serem atualizados
    * @returns O produtor atualizado
    */
-  abstract update(id: string, data: Partial<CreateProdutorDto>): Produtor;
+  abstract update(id: string, data: Partial<CreateProdutorDto>): Promise<Produtor>;
 }

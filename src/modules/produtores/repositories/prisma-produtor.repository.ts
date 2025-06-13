@@ -22,7 +22,7 @@ export class PrismaProdutorRepository implements ProdutorRepository {
           documento: data.documento,
         },
       });
-    } catch (e) {
+    } catch (e: any) {
       if (e.code === 'P2002') {
         throw new ConflictException('Documento já cadastrado');
       }
@@ -35,9 +35,9 @@ export class PrismaProdutorRepository implements ProdutorRepository {
   }
 
   async findById(id: string): Promise<Produtor | undefined> {
-    return this.prisma.produtor.findUnique({
+    return (await this.prisma.produtor.findUnique({
       where: { id },
-    }) ?? undefined;
+    })) ?? undefined;
   }
 
   async update(id: string, data: Partial<CreateProdutorDto>): Promise<Produtor> {
@@ -49,7 +49,7 @@ export class PrismaProdutorRepository implements ProdutorRepository {
           atualizadoEm: new Date(),
         },
       });
-    } catch (e) {
+    } catch (e: any) {
       if (e.code === 'P2025') {
         throw new NotFoundException('Produtor não encontrado');
       }

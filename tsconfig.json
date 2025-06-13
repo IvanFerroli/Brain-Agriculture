@@ -9,12 +9,15 @@
     "target": "ES2021",
     "sourceMap": true,
     "outDir": "./dist",
-    "baseUrl": "./",
+    "baseUrl": "./src",
+    "paths": {
+      "@/*": ["*"]
+    },
     "incremental": true,
     "skipLibCheck": true,
     "strict": true,
     "moduleResolution": "node"
   },
   "exclude": ["node_modules", "dist"],
-  "include": ["src"]
+  "include": ["src", "src/modules/prisma"]
 }

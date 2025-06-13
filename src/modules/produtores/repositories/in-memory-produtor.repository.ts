@@ -12,7 +12,7 @@ import { v4 as uuid } from 'uuid';
 export class InMemoryProdutorRepository implements ProdutorRepository {
   private produtores: Produtor[] = [];
 
-  create(data: CreateProdutorDto): Produtor {
+  async create(data: CreateProdutorDto): Promise<Produtor> {
     const novo: Produtor = {
       id: uuid(),
       nome: data.nome,
@@ -25,12 +25,12 @@ export class InMemoryProdutorRepository implements ProdutorRepository {
     return novo;
   }
 
-  findAll(): Produtor[] {
+  async findAll(): Promise<Produtor[]> {
     return this.produtores;
   }
 
-    findById(id: string): Produtor | undefined {
-    return this.produtores.find(p => p.id === id);
+  async findById(id: string): Promise<Produtor | undefined> {
+    return this.produtores.find((p: Produtor) => p.id === id);
   }
 
   /**
@@ -40,8 +40,8 @@ export class InMemoryProdutorRepository implements ProdutorRepository {
    * @param data Campos que devem ser atualizados
    * @returns O produtor atualizado
    */
-  update(id: string, data: Partial<CreateProdutorDto>): Produtor {
-    const produtor = this.findById(id);
+  async update(id: string, data: Partial<CreateProdutorDto>): Promise<Produtor> {
+    const produtor = await this.findById(id);
     if (!produtor) {
       throw new Error('Produtor não encontrado');
     }
