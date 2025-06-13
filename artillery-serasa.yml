@@ -1,0 +1,71 @@
+config:
+  target: "http://localhost:3000"
+  phases:
+    - duration: 60
+      arrivalRate: 10
+
+scenarios:
+  - name: Health Check
+    flow:
+      - get:
+          url: "/health"
+
+  - name: Dashboard sem filtro
+    flow:
+      - get:
+          url: "/dashboard/metrics"
+
+  - name: Dashboard com filtro estado
+    flow:
+      - get:
+          url: "/dashboard/metrics?estado=PB"
+
+  - name: Dashboard com filtro cultura
+    flow:
+      - get:
+          url: "/dashboard/metrics?cultura=Soja"
+
+  - name: Dashboard com todos filtros combinados
+    flow:
+      - get:
+          url: "/dashboard/metrics?estado=PE&cultura=Feijão&areaMin=50&areaMax=200&search=Fazenda"
+
+  # PRODUTOR
+  - name: Lista de produtores
+    flow:
+      - get:
+          url: "/produtores"
+  - name: Detalhar produtor Ana Souza
+    flow:
+      - get:
+          url: "/produtores/352478ba-73f4-4e3d-85a8-31e3aeebf162"
+
+  # FAZENDA
+  - name: Lista de fazendas
+    flow:
+      - get:
+          url: "/fazendas"
+  - name: Detalhar fazenda Boa Vista
+    flow:
+      - get:
+          url: "/fazendas/1c109ee7-5d6a-46ed-a5c2-143f70f6a2b5"
+
+  # SAFRA
+  - name: Lista de safras
+    flow:
+      - get:
+          url: "/safras"
+  - name: Detalhar safra Verão 2021/22
+    flow:
+      - get:
+          url: "/safras/3d8a14da-e6ae-4ea8-97fe-f91bfe420f87"
+
+  # CULTURA
+  - name: Lista de culturas
+    flow:
+      - get:
+          url: "/culturas"
+  - name: Detalhar cultura Milho
+    flow:
+      - get:
+          url: "/culturas/1ab73b3a-4cb6-4b94-80c8-81f6ac0c2e1d"

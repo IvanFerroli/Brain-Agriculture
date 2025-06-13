@@ -6,7 +6,7 @@ import { Controller, Get } from '@nestjs/common';
  * Esse endpoint é utilizado para confirmar que a API está ativa e operando corretamente.
  * Pode ser utilizado por ferramentas de monitoramento ou orquestradores (ex: Render, Docker, K8s).
  */
-@Controller()
+@Controller('health')
 export class HealthController {
   /**
    * Rota raiz da API (`GET /`) que retorna um JSON simples com informações básicas do status da aplicação.
