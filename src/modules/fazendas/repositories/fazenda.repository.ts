@@ -9,8 +9,9 @@ export abstract class FazendaRepository {
   /**
    * Cria uma nova fazenda.
    * @param fazenda Dados da fazenda a ser criada.
+   * @returns Objeto da fazenda criada.
    */
-  abstract create(fazenda: Fazenda): Promise<void>;
+  abstract create(fazenda: Fazenda): Promise<Fazenda>;
 
   /**
    * Atualiza uma fazenda existente.

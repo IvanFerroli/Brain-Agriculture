@@ -1,5 +1,7 @@
+import { NotFoundException } from "@nestjs/common";
 import { Fazenda } from "../entities/fazenda.entity";
 import { FazendaRepository } from "./fazenda.repository";
+import { v4 as uuid } from 'uuid';
 
 /**
  * Implementação em memória da interface FazendaRepository.
@@ -9,12 +11,17 @@ import { FazendaRepository } from "./fazenda.repository";
 export class InMemoryFazendaRepository implements FazendaRepository {
   private fazendas: Fazenda[] = [];
 
-  async create(fazenda: Fazenda): Promise<void> {
-    this.fazendas.push({
+  async create(fazenda: Fazenda): Promise<Fazenda> {
+    const novo = {
       ...fazenda,
+      id: fazenda.id ?? uuid(), // se não tiver id, gera um UUID
       criadoEm: new Date(),
       atualizadoEm: new Date(),
-    });
+    };
+
+    this.fazendas.push(novo);
+
+    return novo;
   }
 
   async update(id: string, data: Partial<Fazenda>): Promise<void> {
@@ -30,7 +37,7 @@ export class InMemoryFazendaRepository implements FazendaRepository {
 
   async delete(id: string): Promise<void> {
     const index = this.fazendas.findIndex((f) => f.id === id);
-    if (index === -1) throw new Error("Fazenda não encontrada");
+    if (index === -1) throw new NotFoundException("Fazenda não encontrada");
 
     this.fazendas.splice(index, 1);
   }

@@ -15,7 +15,7 @@ import { DashboardFilterDto } from "@/modules/dashboard/dto/dashboard-filter.dto
 export class PrismaFazendaRepository implements FazendaRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(fazenda: Fazenda): Promise<void> {
+  async create(fazenda: Fazenda): Promise<Fazenda> {
     const data: Prisma.FazendaUncheckedCreateInput = {
       id: fazenda.id,
       nome: fazenda.nome!,
@@ -27,7 +27,7 @@ export class PrismaFazendaRepository implements FazendaRepository {
       produtorId: fazenda.produtorId!,
     };
 
-    await this.prisma.fazenda.create({ data });
+    return await this.prisma.fazenda.create({ data });
   }
 
   async update(id: string, data: Partial<Fazenda>): Promise<void> {

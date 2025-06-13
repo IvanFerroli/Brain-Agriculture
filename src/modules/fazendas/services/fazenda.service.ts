@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { CreateFazendaDto } from "../dto/create-fazenda.dto";
 import { Fazenda } from "../entities/fazenda.entity";
 import { FazendaRepository } from "../repositories/fazenda.repository";
@@ -30,8 +30,8 @@ export class FazendaService {
    *
    * @param dto Objeto contendo nome, áreas e produtorId
    */
-  async create(dto: CreateFazendaDto): Promise<void> {
-    await this.fazendaRepository.create(dto);
+  async create(dto: CreateFazendaDto): Promise<Fazenda> {
+    return this.fazendaRepository.create(dto);
   }
 
   /**
@@ -64,20 +64,13 @@ export class FazendaService {
   }
 
   /**
-   * Remove uma fazenda pelo ID, se ela existir.
+   * Remove uma fazenda pelo ID.
    *
-   * @param id UUID da fazenda
-   * @throws Error se a fazenda não for encontrada
+   * @param id UUID da fazenda a ser removida
+   * @throws NotFoundException se a fazenda não for encontrada
    */
   async delete(id: string): Promise<void> {
-    const fazendas = await this.fazendaRepository.findAll();
-    const index = fazendas.findIndex((f) => f.id === id);
-
-    if (index === -1) {
-      throw new Error("Fazenda não encontrada");
-    }
-
-    fazendas.splice(index, 1);
+    return this.fazendaRepository.delete(id);
   }
 
   /**

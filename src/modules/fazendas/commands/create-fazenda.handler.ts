@@ -1,6 +1,8 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { CreateFazendaCommand } from './create-fazenda.command';
 import { FazendaService } from '../services/fazenda.service';
+import { CreateFazendaDto } from '../dto/create-fazenda.dto';
+import { Fazenda } from '../entities/fazenda.entity';
 
 /**
  * @module Fazenda
@@ -21,12 +23,13 @@ export class CreateFazendaHandler implements ICommandHandler<CreateFazendaComman
    * (como validação de soma de áreas e consistência de campos).
    *
    * @param command - Objeto `CreateFazendaCommand` contendo o DTO com os dados da fazenda.
-   * @returns `void` em caso de sucesso. Pode lançar exceções em caso de erro de validação.
+   * @returns Fazenda criada
    *
    * @throws BadRequestException se os dados forem inválidos.
    * @throws ConflictException se houver conflito de dados (regra futura).
    */
-  async execute(command: CreateFazendaCommand): Promise<void> {
-    await this.fazendaService.create(command.data);
+  async execute(command: CreateFazendaCommand): Promise<Fazenda> {
+    const dto: CreateFazendaDto = command.data;
+    return this.fazendaService.create(dto);
   }
 }
