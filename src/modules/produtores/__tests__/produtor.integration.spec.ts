@@ -55,14 +55,18 @@ describe("ProdutorController (integration)", () => {
       .expect(200);
 
     expect(Array.isArray(resAll.body)).toBe(true);
-    expect(
-      resAll.body.some(
-        (p: any) =>
-          p.id === id &&
-          p.nome === createDto.nome &&
-          p.documento === createDto.documento,
-      ),
-    ).toBe(true);
+
+    // Busca o produtor criado pelo ID e valida todos os campos esperados
+    const found = resAll.body.find(
+      (p: any) =>
+        p.id === id &&
+        p.nome === createDto.nome &&
+        p.documento === createDto.documento,
+    );
+
+    expect(found).toBeDefined();
+    expect(found.nome).toBe(createDto.nome);
+    expect(found.documento).toBe(createDto.documento);
 
     const resOne = await request(app.getHttpServer())
       .get(`/produtores/${id}`)
@@ -70,8 +74,10 @@ describe("ProdutorController (integration)", () => {
 
     expect(resOne.body.nome).toBe("Produtor Integração");
 
-    await request(app.getHttpServer()).delete(`/produtores/${id}`).expect(200);
+    // Deletar produtor
+    await request(app.getHttpServer()).delete(`/produtores/${id}`).expect(200); // Pode ser 200 ou 204
 
-    await request(app.getHttpServer()).get(`/produtores/${id}`).expect(404);
+    // Confirmar exclusão
+    await request(app.getHttpServer()).get(`/produtores/${id}`).expect(404); // Espera 404 após a exclusão
   });
 });

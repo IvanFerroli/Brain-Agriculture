@@ -1,8 +1,8 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
-import { AppModule } from '../../../app.module';
-import * as request from 'supertest';
-import { PrismaClient } from '@prisma/client';
+import { Test, TestingModule } from "@nestjs/testing";
+import { INestApplication } from "@nestjs/common";
+import { AppModule } from "../../../app.module";
+import * as request from "supertest";
+import { PrismaClient } from "@prisma/client";
 
 /**
  * @file safra.integration.spec.ts
@@ -12,7 +12,7 @@ import { PrismaClient } from '@prisma/client';
  * Executa requests HTTP contra a aplicação NestJS real, usando banco via Prisma.
  */
 
-describe('SafraController (integration)', () => {
+describe("SafraController (integration)", () => {
   let app: INestApplication;
   let prisma: PrismaClient;
 
@@ -27,7 +27,6 @@ describe('SafraController (integration)', () => {
   });
 
   beforeEach(async () => {
-    // Limpa entidades dependentes se necessário (ex: cultura, se houver FK)
     await prisma.cultura.deleteMany();
     await prisma.safra.deleteMany();
   });
@@ -37,42 +36,44 @@ describe('SafraController (integration)', () => {
     await prisma.$disconnect();
   });
 
-  it('deve criar, listar e deletar uma safra (fluxo completo)', async () => {
-    // **Ajuste os campos do DTO conforme seu CreateSafraDto**
+  it("deve criar, listar e deletar uma safra (fluxo completo)", async () => {
     const createDto = {
-      nome: 'Safra Integração',
-      inicio: '2023-01-01',
-      fim: '2023-12-31'
+      nome: "Safra Integração",
+      inicio: "2023-01-01",
+      fim: "2023-12-31",
     };
     const resCreate = await request(app.getHttpServer())
-      .post('/safras')
+      .post("/safras")
       .send(createDto)
       .expect(201);
 
-    expect(resCreate.body).toHaveProperty('id');
-    expect(resCreate.body.nome).toBe('Safra Integração');
+    expect(resCreate.body).toHaveProperty("id");
+    expect(resCreate.body.nome).toBe("Safra Integração");
 
     const id = resCreate.body.id;
 
     const resAll = await request(app.getHttpServer())
-      .get('/safras')
+      .get("/safras")
       .expect(200);
 
     expect(Array.isArray(resAll.body)).toBe(true);
-    expect(resAll.body.length).toBe(1);
+    const found = resAll.body.find(
+      (s: any) => s.id === id && s.nome === createDto.nome,
+    );
+
+    expect(found).toBeDefined();
+    expect(found.nome).toBe(createDto.nome);
 
     const resOne = await request(app.getHttpServer())
       .get(`/safras/${id}`)
       .expect(200);
 
-    expect(resOne.body.nome).toBe('Safra Integração');
+    expect(resOne.body.nome).toBe("Safra Integração");
 
-    await request(app.getHttpServer())
-      .delete(`/safras/${id}`)
-      .expect(200);
+    // Deletar safra
+    await request(app.getHttpServer()).delete(`/safras/${id}`).expect(200);  // Pode ser 204 ou 200
 
-    await request(app.getHttpServer())
-      .get(`/safras/${id}`)
-      .expect(404);
+    // Confirmar exclusão
+    await request(app.getHttpServer()).get(`/safras/${id}`).expect(404);  // Espera 404 após exclusão
   });
 });

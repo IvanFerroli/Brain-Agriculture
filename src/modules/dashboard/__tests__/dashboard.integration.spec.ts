@@ -40,7 +40,7 @@ describe("DashboardController (integration)", () => {
   });
 
   it("deve retornar métricas agregadas do dashboard com e sem filtros", async () => {
-    // Prepara dados mínimos
+    // Cria produtor
     const resProdutor = await request(app.getHttpServer())
       .post("/produtores")
       .send({ nome: "Produtor Dash", documento: String(Date.now()) })
@@ -48,6 +48,7 @@ describe("DashboardController (integration)", () => {
 
     const produtorId = resProdutor.body.id;
 
+    // Cria fazenda
     const resFazenda = await request(app.getHttpServer())
       .post("/fazendas")
       .send({
@@ -63,6 +64,7 @@ describe("DashboardController (integration)", () => {
 
     const fazendaId = resFazenda.body.id;
 
+    // Cria safra
     const resSafra = await request(app.getHttpServer())
       .post("/safras")
       .send({
@@ -88,7 +90,7 @@ describe("DashboardController (integration)", () => {
       .get("/dashboard/metrics")
       .expect(200);
 
-    // Sempre valida presença dos campos essenciais
+    // Verifica a presença de chaves essenciais
     expect(resDashboard.body).toHaveProperty("totalFazendas");
     expect(resDashboard.body).toHaveProperty("totalHectares");
     expect(resDashboard.body.graficos).toHaveProperty("porEstado");
@@ -96,15 +98,16 @@ describe("DashboardController (integration)", () => {
     expect(resDashboard.body.graficos).toHaveProperty("porUsoDoSolo");
     expect(resDashboard.body.filtrosAplicados).toEqual({});
 
-    // Log pra depuração (pode remover depois)
+    // Log para depuração
     console.log("porEstado:", resDashboard.body.graficos.porEstado);
     console.log("porCultura:", resDashboard.body.graficos.porCultura);
 
-    // Só exige a chave se o agrupamento não for vazio
+    // Verifica que o gráfico porEstado contém "SC", se existir
     if (Object.keys(resDashboard.body.graficos.porEstado).length > 0) {
       expect(Object.keys(resDashboard.body.graficos.porEstado)).toContain("SC");
     }
 
+    // Verifica que o gráfico porCultura contém "Soja", se existir
     if (Object.keys(resDashboard.body.graficos.porCultura).length > 0) {
       expect(Object.keys(resDashboard.body.graficos.porCultura)).toContain("Soja");
     }
@@ -123,7 +126,7 @@ describe("DashboardController (integration)", () => {
 
     expect(resDashboardCultura.body.filtrosAplicados).toMatchObject({ cultura: "Soja" });
 
-    // Só exige "Soja" se houver culturas agrupadas
+    // Verifica que "Soja" está presente no gráfico porCultura, se existir
     if (Object.keys(resDashboardCultura.body.graficos.porCultura).length > 0) {
       expect(
         Object.keys(resDashboardCultura.body.graficos.porCultura)

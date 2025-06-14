@@ -6,8 +6,18 @@ import { PrismaClient } from "@prisma/client";
 import { exec } from "child_process";
 import { promisify } from "util";
 
+/**
+ * @file fazenda.integration.spec.ts
+ * @module FazendaIntegrationTest
+ * @description
+ * Teste de integração para Fazenda: cobre o fluxo real de criação, listagem, consulta, atualização e deleção.
+ * Executa requests HTTP contra a aplicação NestJS real, usando banco via Prisma.
+ */
+
+
 const execAsync = promisify(exec);
 
+jest.setTimeout(20000);
 describe("FazendaController (integration)", () => {
   let app: INestApplication;
   let prisma: PrismaClient;

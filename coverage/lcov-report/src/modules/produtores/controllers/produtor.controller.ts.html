@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>23/23</span>
+                <span class='fraction'>24/24</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>21/21</span>
+                <span class='fraction'>22/22</span>
             </div>
         
             
@@ -150,7 +150,23 @@
 <a name='L85'></a><a href='#L85'>85</a>
 <a name='L86'></a><a href='#L86'>86</a>
 <a name='L87'></a><a href='#L87'>87</a>
-<a name='L88'></a><a href='#L88'>88</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">6x</span>
+<a name='L88'></a><a href='#L88'>88</a>
+<a name='L89'></a><a href='#L89'>89</a>
+<a name='L90'></a><a href='#L90'>90</a>
+<a name='L91'></a><a href='#L91'>91</a>
+<a name='L92'></a><a href='#L92'>92</a>
+<a name='L93'></a><a href='#L93'>93</a>
+<a name='L94'></a><a href='#L94'>94</a>
+<a name='L95'></a><a href='#L95'>95</a>
+<a name='L96'></a><a href='#L96'>96</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -234,29 +250,37 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
-import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { CreateProdutorDto } from '../dto/create-produtor.dto';
-import { Produtor } from '../entities/produtor.entity';
-import { CreateProdutorCommand } from '../commands/create-produtor.command';
-import { UpdateProdutorCommand } from '../commands/update-produtor.command';
-import { FindAllProdutoresQuery } from '../queries/find-all-produtores.query';
-import { FindProdutorByIdQuery } from '../queries/find-produtor-by-id.query';
-import { DeleteProdutorCommand } from '../commands/delete-produtor.command'
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+} from "@nestjs/common";
+import { CommandBus, QueryBus } from "@nestjs/cqrs";
+import { CreateProdutorDto } from "../dto/create-produtor.dto";
+import { Produtor } from "../entities/produtor.entity";
+import { CreateProdutorCommand } from "../commands/create-produtor.command";
+import { UpdateProdutorCommand } from "../commands/update-produtor.command";
+import { FindAllProdutoresQuery } from "../queries/find-all-produtores.query";
+import { FindProdutorByIdQuery } from "../queries/find-produtor-by-id.query";
+import { DeleteProdutorCommand } from "../commands/delete-produtor.command";
 &nbsp;
 /**
  * Controlador responsável por lidar com as requisições relacionadas aos produtores.
  *
  * Todas as rotas deste controlador serão prefixadas por `/produtores`.
  */
-@Controller('produtores')
+@Controller("produtores")
 export class ProdutorController {
   /**
    * Injeta os barramentos do CQRS (CommandBus e QueryBus).
-   * 
+   *
    * @param commandBus Responsável por executar comandos (ações que alteram o estado)
    * @param queryBus Responsável por executar queries (ações que apenas leem dados)
    */
@@ -292,8 +316,8 @@ export class ProdutorController {
    * @param id UUID do produtor
    * @returns Produtor correspondente ou `undefined` se não encontrado
    */
-  @Get(':id')
-  async findById(@Param('id') id: string): Promise<span class="branch-1 cbranch-no" title="branch not covered" >&lt;Produtor | undefined&gt; {</span>
+  @Get(":id")
+  async findById(@Param("id") id: string): Promise<span class="branch-1 cbranch-no" title="branch not covered" >&lt;Produtor | undefined&gt; {</span>
     return this.queryBus.execute(new FindProdutorByIdQuery(id));
   }
 &nbsp;
@@ -304,25 +328,25 @@ export class ProdutorController {
    * @param dto Campos parciais a serem atualizados (nome, documento)
    * @returns O produtor atualizado
    */
-  @Put(':id')
+  @Put(":id")
   async update(
-    @Param('id') id: string,
+    @Param("id") id: string,
     @Body() dto: <span class="branch-1 cbranch-no" title="branch not covered" >Partial<span class="branch-0 cbranch-no" title="branch not covered" >&lt;</span>CreateProdutorDto&gt;,</span>
   ): Promise<span class="branch-1 cbranch-no" title="branch not covered" >&lt;Produtor&gt; {</span>
     return this.commandBus.execute(new UpdateProdutorCommand(id, dto));
   }
 &nbsp;
-    /**
+  /**
    * Rota para remover um produtor existente pelo ID.
    *
    * @param id UUID do produtor a ser removido
    * @returns void
    */
-  @Delete(':id')
-  async delete(@Param('id') id: string): Promise<span class="branch-1 cbranch-no" title="branch not covered" >&lt;void&gt; {</span>
-    return this.commandBus.execute(new DeleteProdutorCommand(id));
+  @Delete(":id")
+  async delete(@Param("id") id: string): Promise<span class="branch-1 cbranch-no" title="branch not covered" >&lt;any&gt; {</span>
+    await this.commandBus.execute(new DeleteProdutorCommand(id));
+    return {}; // Retorna 200 ou 204 sem lançar exceções
   }
-&nbsp;
 }
 &nbsp;</pre></td></tr></table></pre>
 
@@ -331,7 +355,7 @@ export class ProdutorController {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-06-13T21:29:27.953Z
+                at 2025-06-14T00:59:39.937Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>
