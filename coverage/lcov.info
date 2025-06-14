@@ -1214,7 +1214,7 @@ FN:147,(anonymous_10)
 FN:176,(anonymous_11)
 FN:190,(anonymous_12)
 FNF:11
-FNH:11
+FNH:10
 FNDA:5,(anonymous_2)
 FNDA:3,(anonymous_3)
 FNDA:1,(anonymous_4)
@@ -1224,7 +1224,7 @@ FNDA:3,(anonymous_7)
 FNDA:3,(anonymous_8)
 FNDA:3,(anonymous_9)
 FNDA:3,(anonymous_10)
-FNDA:6,(anonymous_11)
+FNDA:0,(anonymous_11)
 FNDA:3,(anonymous_12)
 DA:1,5
 DA:4,5
@@ -1280,8 +1280,8 @@ DA:161,0
 DA:162,0
 DA:169,3
 DA:175,3
-DA:177,6
-DA:178,6
+DA:177,0
+DA:178,0
 DA:193,3
 DA:195,3
 DA:197,3
@@ -1296,7 +1296,7 @@ DA:209,0
 DA:216,3
 DA:224,3
 LF:69
-LH:43
+LH:41
 BRDA:40,0,0,0
 BRDA:53,1,0,0
 BRDA:66,2,0,3
@@ -1316,7 +1316,7 @@ BRDA:119,12,0,0
 BRDA:120,13,0,0
 BRDA:123,14,0,0
 BRDA:139,15,0,3
-BRDA:139,15,1,0
+BRDA:139,15,1,3
 BRDA:154,16,0,0
 BRDA:154,17,0,3
 BRDA:154,17,1,3
@@ -1331,15 +1331,15 @@ BRDA:203,24,0,0
 BRDA:204,25,0,0
 BRDA:207,26,0,0
 BRDA:225,27,0,3
-BRDA:225,27,1,0
+BRDA:225,27,1,3
 BRDA:226,28,0,3
-BRDA:226,28,1,0
+BRDA:226,28,1,3
 BRDA:16,29,0,5
 BRDA:16,29,1,0
 BRDA:16,30,0,5
 BRDA:16,30,1,5
 BRF:41
-BRH:19
+BRH:22
 end_of_record
 TN:
 SF:src/modules/fazendas/services/fazenda.service.ts
@@ -1891,7 +1891,7 @@ FNF:7
 FNH:6
 FNDA:8,(anonymous_2)
 FNDA:9,(anonymous_3)
-FNDA:3,(anonymous_4)
+FNDA:2,(anonymous_4)
 FNDA:1,(anonymous_5)
 FNDA:2,(anonymous_6)
 FNDA:0,(anonymous_7)
