@@ -40,12 +40,6 @@ Este projeto foi desenvolvido como entrega para o desafio técnico da **Solutis 
 ---
 
 ## 🗺️ Diagrama Entidade-Relacionamento (ER)
-
-<p align="center">
-  <img src="./src/img/prisma-uml.png" alt="Diagrama ER">
-</p>
-
-
 ```mermaid
 erDiagram
     PRODUTOR ||--o{ FAZENDA : possui
